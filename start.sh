@@ -44,10 +44,3 @@ if [ "$(docker exec php bash -c "php -m | grep mysqli")" = "" ]; then
         apachectl restart
 EOF
 fi;
-
-## instalacao myAAC
-# rm -r site/config.local.php &> /dev/null
-# echo $DOCKER_NETWORK_GATEWAY > site/install/ip.txt
-
-# instalacao Gesior2012
-# echo $DOCKER_NETWORK_GATEWAY > site/install.txt
