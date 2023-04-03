@@ -1,11 +1,14 @@
 # Dockerized Tibia OTserver
 
 ## O que tem nesse repositório?
-Alguns scripts shell, arquivos sql e arquivos yaml para criar o ambiente e executar um otserver com banco de dados, gerenciador de banco de dados e servidor web para login.
+Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e executar um otserver com banco de dados, gerenciador de banco de dados e servidor web para login.
+
+<br>
 
 ## Requisitos
 - docker
 - docker-compose
+- algumas dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias iniciar o servidor
 
 <br>
 
@@ -14,10 +17,14 @@ Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser 
 
 <br>
 
-## start.sh
+## Arquivos do repositório
 No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
 
-O arquivo `destroy.sh` é usado para limpar o ambiente, ele pode ser utilizado para recriar o otserver e os containers auxiliares. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
+O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
+
+`site/login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados. O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`. Veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
+
+`docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
 <br>
 
@@ -91,7 +98,9 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '<MYSQL_USER>'@'%' WITH GRANT O
 mysql -u root -e "FLUSH PRIVILEGES;"
 ```
 
-## Detalhes da rota de login - localhost:8080/login.php
+<br>
+
+## login.php
 RequestBody
 ``` json
 {
