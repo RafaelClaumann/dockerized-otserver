@@ -1,0 +1,78 @@
+version: '3.3'
+
+services:
+  server-svc:
+    image: ubuntu:22.04
+    container_name: server
+    restart: on-failure    
+    depends_on:
+      mysql-svc:
+        condition: service_started
+    working_dir: "/server"
+    entrypoint: ["./canary"]
+    networks:
+      - otserver
+    ports:
+      - 7171:7171
+      - 7172:7172      
+    volumes:
+        - ${PWD}/server:/server     
+
+  mysql-svc:
+    image: mysql:8.0.28
+    container_name: mysql
+    restart: on-failure
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_ROOT_HOST: '%'
+    networks:
+      - otserver
+    ports:
+      - 3306:3306
+    volumes:
+        - ${PWD}/sql/:/docker-entrypoint-initdb.d/
+
+  phpmyadmin-svc:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      mysql-svc:
+        condition: service_started
+    environment:
+      PMA_HOST: mysql-svc
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: noob
+    networks:
+      - otserver
+    ports:
+      - 9090:80
+
+  php-svc:
+    image: php:8.0-apache
+    container_name: php
+    depends_on:
+      mysql-svc:
+        condition: service_started
+    environment:
+      DOCKER_NETWORK_GATEWAY: ${DOCKER_NETWORK_GATEWAY}
+      OT_SERVER_NAME: ${SERVER_NAME}
+    networks:
+      - otserver
+    ports:
+      - 8080:80
+    volumes:
+      - ${PWD}/site/:/var/www/html
+      - ${PWD}/server/:/home/server     # mapeamento necessario se for configurar Gesior2012 ou myAAC
+      - ${PWD}/run-php.sh:/home/php.sh
+
+networks:
+  otserver:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: ${DOCKER_NETWORK_CIDR}
+         gateway: ${DOCKER_NETWORK_GATEWAY}
