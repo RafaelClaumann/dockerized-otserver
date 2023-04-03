@@ -4,11 +4,17 @@
 - docker
 - docker-compose
 
+<br>
+
 ## Informações Gerais
 Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Também é possível obter o servidor clonando a branch main do mesmo repositório. Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
+<br>
+
 ## start.sh
 No arquivo `start.sh` define-se as credenciais do banco de dados mysql e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo é responsável iniciar os containers docker, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar a extensão `mysqli` no container php.
+
+<br>
 
 ## Listando as redes do docker
 ``` bash
@@ -26,8 +32,10 @@ $docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open
     192.168.128.0/20
 ```
 
+<br>
+
 ## Gesior2012 e myAAC
-Caso queira instalar do [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) é preciso instalar algumas extensões no container php.
+Caso queira instalar os AACs(Automatic Account Creator) [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) será preciso adicionar algumas extensões no container php. Informações a respeito das extensões necessárias podem ser encontradas nos repositórios dos respectivos AACs.
 ``` bash
 chmod -R 777 /var/www/*
 apt update && \
@@ -57,6 +65,8 @@ echo $DOCKER_NETWORK_GATEWAY > site/install/ip.txt
 # Gesior2012
 echo $DOCKER_NETWORK_GATEWAY > site/install.txt
 ```
+
+<br>
 
 ## MySQL
 Em algumas situações houveram erros ao logar no PhpMyAdmin e tive que executar as seguintes consultas no banco de dados
