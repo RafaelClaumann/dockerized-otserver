@@ -3,19 +3,15 @@
 ## O que tem nesse repositório?
 Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e executar um otserver com banco de dados, gerenciador de banco de dados e servidor web para login.
 
-<br>
-
 ## Requisitos
 - docker
 - docker-compose
 - algumas dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias iniciar o servidor
 
-<br>
 
 ## Informações Gerais
 Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Também é possível obter o servidor clonando a branch main do mesmo repositório. Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
-<br>
 
 ## Arquivos do repositório
 No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
@@ -26,7 +22,6 @@ O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa op�
 
 `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
-<br>
 
 ## Listando as redes do docker
 ``` bash
@@ -44,10 +39,8 @@ $docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open
     192.168.128.0/20
 ```
 
-<br>
-
 ## Gesior2012 e myAAC
-Caso queira instalar os AACs(Automatic Account Creator) [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) será preciso adicionar algumas extensões no container php. Informações a respeito das extensões necessárias podem ser encontradas nos repositórios dos respectivos AACs.
+Caso queira instalar os AACs(Automatic Account Creator) [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) será preciso adicionar algumas extensões no container php. Mais informações a respeito das extensões necessárias podem ser encontradas nos repositórios dos respectivos AACs.
 ``` bash
 chmod -R 777 /var/www/*
 apt update && \
@@ -69,7 +62,7 @@ docker-php-ext-install zip
 apachectl restart
 ```
 
-A instalação do Gesior2012 precisa que o endereço IP de gateway docker seja colocado no arquivo `site/install.txt`, por outro lado, a instalação do myAAC espera esse endereço no arquivo `site/install/ip.txt`.
+Para instalar o Gesior2012 é preciso inserir o endereço IP do gateway da rede docker em `site/install.txt`. Para a instalação do myAAC o endereço deverá ser inserido em `site/install/ip.txt`. O endereço do gateway de rede pode ser obtido na varivel `DOCKER_NETWORK_GATEWAY` do arquivo `start.sh` ou através do comando `docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' otserver_otserver`.
 ``` bash
 # instalacao myAAC
 rm -r site/config.local.php &> /dev/null  # removendo configuração de instalações anteriores
@@ -78,8 +71,6 @@ echo $DOCKER_NETWORK_GATEWAY > site/install/ip.txt
 # Gesior2012
 echo $DOCKER_NETWORK_GATEWAY > site/install.txt
 ```
-
-<br>
 
 ## MySQL
 Em algumas situações houveram erros ao logar no PhpMyAdmin e tive que executar as seguintes consultas no banco de dados
