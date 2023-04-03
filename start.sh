@@ -31,16 +31,12 @@ sed -i "s/^\$databaseUser\s.*=\s.*;$/\$databaseUser = \"$DATABASE_USER\";/g" sit
 sed -i "s/^\$databaseUserPassword\s.*=\s.*;$/\$databaseUserPassword = \"$DATABASE_PASSWORD\";/g" site/login.php
 sed -i "s/^\$databaseName\s.*=\s.*;$/\$databaseName = \"$DATABASE_NAME\";/g" site/login.php
 
-until [ "$(docker inspect -f {{.State.Running}} php)" == "true" ] &&
-      [ "$(docker inspect -f {{.State.Running}} phpmyadmin)" == "true" ]; do
-    sleep 0.1
-done
 echo "configuring php extensions"
 echo
 if [ "$(docker exec php bash -c "php -m | grep mysqli")" = "" ]; then
     docker exec -i php bash <<-EOF
         chmod -R 777 /var/www/*
-        docker-php-ext-install mysqli
-        apachectl restart
+        docker-php-ext-install mysqli &> /dev/null
+        apachectl restart &> /dev/null
 EOF
 fi;
