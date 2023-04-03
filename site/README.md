@@ -1,6 +1,6 @@
 # Opcional - Download Gesior2012 ou MyAAC
 
-### Clone com git
+### Opção 01: clone com git
 ``` bash
 git clone https://github.com/gesior/Gesior2012.git
 mv Gesior2012/* .
@@ -11,7 +11,7 @@ mv myaac/* .
 rm -r myaac/
 ```
 
-### Download zip
+### Opção 02: download zip
 ``` bash
 # download e unzip na pasta /site
 https://github.com/gesior/Gesior2012/archive/refs/heads/master.zip
