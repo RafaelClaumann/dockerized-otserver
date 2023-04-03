@@ -1,23 +1,6 @@
 version: '3.3'
 
 services:
-  server-svc:
-    image: ubuntu:22.04
-    container_name: server
-    restart: on-failure    
-    depends_on:
-      mysql-svc:
-        condition: service_started
-    working_dir: "/server"
-    entrypoint: ["./canary"]
-    networks:
-      - otserver
-    ports:
-      - 7171:7171
-      - 7172:7172      
-    volumes:
-        - ${PWD}/server:/server     
-
   mysql-svc:
     image: mysql:8.0.28
     container_name: mysql
@@ -35,6 +18,23 @@ services:
       - 3306:3306
     volumes:
         - ${PWD}/sql/:/docker-entrypoint-initdb.d/
+
+  server-svc:
+    image: ubuntu:22.04
+    container_name: server
+    depends_on:
+      mysql-svc:
+        condition: service_started
+    restart: on-failure
+    working_dir: /server
+    entrypoint: ./canary
+    networks:
+      - otserver
+    ports:
+      - 7171:7171
+      - 7172:7172      
+    volumes:
+        - ${PWD}/server:/server
 
   phpmyadmin-svc:
     image: phpmyadmin/phpmyadmin
@@ -67,7 +67,6 @@ services:
     volumes:
       - ${PWD}/site/:/var/www/html
       - ${PWD}/server/:/home/server     # mapeamento necessario se for configurar Gesior2012 ou myAAC
-      - ${PWD}/run-php.sh:/home/php.sh
 
 networks:
   otserver:

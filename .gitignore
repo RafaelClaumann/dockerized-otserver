@@ -1,2 +1,5 @@
 server/*
 !README.md
+
+site/00_resquestBody.json
+site/01_responseBody.json
