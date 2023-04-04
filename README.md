@@ -34,22 +34,21 @@ O phpmyadmin pode ser acessado em http://localhost:9090.
 
 
 ## Alterando tibia client
-- Supondo que o download([opentibiabr/canary](https://github.com/opentibiabr/canary/tags)) do client ja tenha sido realizando e ele já esteja extraido em sua pasta de preferencia
-- Supondo que o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado
+Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado
 
-Naveque até a pasta onde o client foi extraído, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe` na pasta `/bin` e em *abrir com notepad++*.
+Naveque até a pasta  `/bin` onde o client foi extraído, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe` e em *abrir com notepad++*.
 
-Procure pelas palavras `loginWebService` e `clientWebService` no arquivo `127.0.0.1_client.exe` que foi aberto com o notepad++ e siga as instruções abaixo.
+Localize as palavras `loginWebService` e `clientWebService` no arquivo aberto com o notepad++ e siga as instruções abaixo.
 
-As duas linhas no **quadro abaixo** são um exemplo do que será encontrado ao abrir o `127.0.0.1_client.exe` com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços deve se balanceada e mantida de acordo com o tamanho da URL.
+As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
 
-Supondo que a URL original de `loginWebService` possui *dez caracteres* e foi substituida por uma URL de *quinze caracteres*, será preciso excluir *cinco espaços em branco* após a URL.
-
-É preciso calcular a diferença da quantidade de caracteres entre a URL original e a nova URL. O resultado dessa diferença é a quantidade de caracteres de espaços em branco que devem ser adicionados ou removidos.
+É preciso calcular a diferença da quantidade de caracteres entre a URL original e a nova URL. O resultado dessa diferença é a quantidade de espaços em branco que devem ser adicionados ou removidos.
+Supondo que a URL original que possui *dez caracteres* será substituida por uma URL de *quinze caracteres* precisamos adicionar *cinco espaços em branco* após a URL.
 
 - URL original menor que nova URL então adicione espaços
 - URL original maior que nova URL então remova espaços
 
+A URL para `loginWebService` e `clientWebService` são as do quadro abaixo: 
 ``` txt
 loginWebService=http://127.0.0.1:8080/login.php                       
 clientWebService=http://127.0.0.1:8080/login.php                         
