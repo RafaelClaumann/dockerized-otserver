@@ -30,13 +30,7 @@ Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser 
 
 O phpmyadmin pode ser acessado em http://localhost:9090.
 
-<br>
-
----
-
-<br>
-
-### Alterando loginWebService e clientWebService do tibia client
+### Alterando tibia client
 - Supondo que o download([opentibiabr/canary](https://github.com/opentibiabr/canary/tags)) do client ja tenha sido realizando e ele já esteja extraido em sua pasta de preferencia.
 - Supondo que o downeload e instalação do [notepad++](https://notepad-plus-plus.org/downloads/) ja tenha sido eraliza
 
