@@ -1,16 +1,17 @@
 # Dockerized Tibia OTserver
 
-### O que tem nesse repositório?
+## O que tem nesse repositório?
 Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e executar um otserver com banco de dados, gerenciador de banco de dados e servidor web para login.
 
-### Requisitos
+
+## Requisitos
 - docker
 - docker-compose
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 - client tibia 12x
 
 
-### Arquivos do repositório
+## Arquivos do repositório
 No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
 
 O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
@@ -23,14 +24,16 @@ O schema do banco de dados e algumas contas são criados de forma automática na
 
 `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
-### Informações Importantes
+
+## Informações Importantes
 Para acessar o otserver é preciso de um client [Tibia](http://tibia.com/) versão 12 ou superior com `loginWebService` e `clientWebService` apontando para http://127.0.0.1:8080/login.php.
 
 Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
 O phpmyadmin pode ser acessado em http://localhost:9090.
 
-### Alterando tibia client
+
+## Alterando tibia client
 - Supondo que o download([opentibiabr/canary](https://github.com/opentibiabr/canary/tags)) do client ja tenha sido realizando e ele já esteja extraido em sua pasta de preferencia.
 - Supondo que o downeload e instalação do [notepad++](https://notepad-plus-plus.org/downloads/) ja tenha sido eraliza
 
@@ -52,7 +55,8 @@ loginWebService=http://127.0.0.1:8080/login.php
 clientWebService=http://127.0.0.1:8080/login.php                         
 ```
 
-### Listando as redes do docker
+
+## Listando as redes do docker
 ``` bash
 $docker network list    
     NETWORK ID     NAME                 DRIVER    SCOPE
@@ -68,7 +72,8 @@ $docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open
     192.168.128.0/20
 ```
 
-### Gesior2012 e myAAC
+
+## Gesior2012 e myAAC
 Caso queira instalar os AACs(Automatic Account Creator) [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) será preciso adicionar algumas extensões no container php. Mais informações a respeito das extensões necessárias podem ser encontradas nos repositórios dos respectivos AACs.
 ``` bash
 chmod -R 777 /var/www/*
@@ -101,7 +106,8 @@ echo $DOCKER_NETWORK_GATEWAY > site/install/ip.txt
 echo $DOCKER_NETWORK_GATEWAY > site/install.txt
 ```
 
-### MySQL
+
+## MySQL
 Em algumas situações houveram erros ao logar no PhpMyAdmin e tive que executar as seguintes consultas no banco de dados
 ``` sql
 # Create database and import schema
@@ -118,7 +124,6 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '<MYSQL_USER>'@'%' WITH GRANT O
 mysql -u root -e "FLUSH PRIVILEGES;"
 ```
 
-<br>
 
 ## login.php
 RequestBody
