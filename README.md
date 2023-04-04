@@ -1,29 +1,55 @@
 # Dockerized Tibia OTserver
 
-## O que tem nesse repositório?
+### O que tem nesse repositório?
 Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e executar um otserver com banco de dados, gerenciador de banco de dados e servidor web para login.
 
-## Requisitos
+### Requisitos
 - docker
 - docker-compose
-- algumas dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias iniciar o servidor
+- dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
+- client tibia 12x
 
 
-## Informações Gerais
-Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Também é possível obter o servidor clonando a branch main do mesmo repositório. Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
-
-
-## Arquivos do repositório
+### Arquivos do repositório
 No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
 
 O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
 
-`site/login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados. O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`. Veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql). O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
+`site/login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
+
+O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
+
+O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
 
 `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
+### Informações Importantes
+Para acessar o otserver é preciso de um client [Tibia](http://tibia.com/) versão 12 ou superior com `loginWebService` e `clientWebService` apontando para http://127.0.0.1:8080/login.php.
 
-## Listando as redes do docker
+Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
+
+O phpmyadmin pode ser acessado em http://localhost:9090.
+
+<br>
+
+---
+
+<br>
+
+### Alterando loginWebService e clientWebService do tibia client
+Supondo que o download do client ja tenha sido feito a partir do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary/tags).
+
+Para alterar os valores de `loginWebService` e `clientWebService` é preciso instalar o [notepad++](https://notepad-plus-plus.org/downloads/). Após a instalação do notepad++ clique com o botão direito do mouse sob o arquivo `/bin/127.0.0.1_client.exe` e em abrir com notepad++.
+
+Cuidado ao alterar os valores de loginWebService e clientWebService pois em ambos existe uma quantidade de espaços após a URL que devem ser mantidos após a alteração.
+
+Por exemplo, se a URL original de loginWebService possui 10 caracteres e for trocda por uma URL com 15 caracteres será preciso excluir 5 espaços em branco após a URL.
+``` txt
+loginWebService=http://127.0.0.1:8080/login.php                       
+clientWebService=http://127.0.0.1:8080/login.php                         
+```
+
+### Listando as redes do docker
 ``` bash
 $docker network list    
     NETWORK ID     NAME                 DRIVER    SCOPE
@@ -39,7 +65,7 @@ $docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open
     192.168.128.0/20
 ```
 
-## Gesior2012 e myAAC
+### Gesior2012 e myAAC
 Caso queira instalar os AACs(Automatic Account Creator) [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) será preciso adicionar algumas extensões no container php. Mais informações a respeito das extensões necessárias podem ser encontradas nos repositórios dos respectivos AACs.
 ``` bash
 chmod -R 777 /var/www/*
@@ -72,7 +98,7 @@ echo $DOCKER_NETWORK_GATEWAY > site/install/ip.txt
 echo $DOCKER_NETWORK_GATEWAY > site/install.txt
 ```
 
-## MySQL
+### MySQL
 Em algumas situações houveram erros ao logar no PhpMyAdmin e tive que executar as seguintes consultas no banco de dados
 ``` sql
 # Create database and import schema
