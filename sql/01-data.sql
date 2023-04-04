@@ -43,7 +43,7 @@ INSERT INTO `players`
     `soul`, `town_id`, `cap`, `sex`, `balance`,
     `skill_shielding`, `prey_wildcard`, `forge_dusts`, `forge_dust_level`, `conditions`)
 VALUES
-    (0, 'Sorcerer', 1, 100,
+    (0, 'Druid', 1, 100,
     800, 5, 4145, 4145,
     8469559800, 120, 23800, 23800, 
     200, 8, 8390, 1, 100000000,
@@ -56,7 +56,7 @@ INSERT INTO `players`
     `soul`, `town_id`, `cap`, `sex`, `balance`,
     `skill_shielding`, `prey_wildcard`, `forge_dusts`, `forge_dust_level`, `conditions`)
 VALUES
-    (0, 'Druid', 1, 100,
+    (0, 'Sorcerer', 1, 100,
     800, 5, 4145, 4145,
     8469559800, 120, 23800, 23800, 
     200, 8, 8390, 1, 100000000,

@@ -135,6 +135,18 @@ docker exec -i mysql mysql <<EOF
 EOF
 
 
+docker network create ngrok_net
+
+docker container run --rm -it \
+  --name ngrok \
+  --env NGROK_AUTHTOKEN=$(cat .ngrok_token) \
+  --network ngrok_net \
+  ngrok/ngrok http nginx:80
+
+docker container run --rm -it \
+  --name nginx \
+  --network ngrok_net \
+  nginx
 
 docker exec mysql mysql -u $MYSQL_USER  $DATABASE_NAME <<EOF
     CREATE DATABASE $DATABASE_NAME;

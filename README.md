@@ -14,30 +14,23 @@ Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e exec
 <br>
 
 ## Arquivos do repositório
-No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
-
-O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
-
-`site/login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
-
-O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
-
-O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
-
-`docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
+- No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
+- O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
+- `site/login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor/banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
+- O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
+- O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
+- `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
 <br>
 
 ## Informações importantes
-Este repositório não inclui o servidor, será preciso clona-lo do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary) e colocar seus arquivos na pasta `server/`.
+Este repositório não inclui os arquivos do servidor, é preciso realizar o download a partir do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Os arquivos baixados devem ser colocados na pasta `server`.
 
-Para acessar o otserver é preciso de um client [Tibia](http://tibia.com/) versão 12 ou superior.
+O servidor pode ser acessado através de um client [Tibia](http://tibia.com/) versão 12x. É preciso alterar os valores das chaves `loginWebService` e `clientWebService` do client para permitir o login em `localhost:8080/login.php`. Veja como realizar as alterações [neste guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
 
-É preciso alterar os valores das chaves `loginWebService` e `clientWebService` do tibia client para permitir o login em `localhost`, veja como realizar essas alterações com [este guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
+Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
-s valores das chaves `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
-
-O phpmyadmin pode ser acessado em http://localhost:9090.
+Para gerenciar o banco de dados MySQL use o phpMyAdmin que estará disponível em `localhost:9090`.
 
 <br>
 
@@ -45,7 +38,8 @@ O phpmyadmin pode ser acessado em http://localhost:9090.
 As seguintes contas são criadas de forma automática quando o banco de dados MySQL é iniciado.
 | email 	| password 	| chars                                                      	|
 |-------	|----------	|------------------------------------------------------------	|
-| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 		|
+| @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
+| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 			|
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
@@ -223,7 +217,27 @@ ResponseBody
 
 <br>
 
+## NGROK
+```bash
+# https://ngrok.com/
+# https://tech.aufomm.com/how-to-use-ngrok-with-docker/
+docker network create ngrok_net
+
+docker container run --rm -it \
+  --name ngrok \
+  --env NGROK_AUTHTOKEN=$(cat .ngrok_token) \
+  --network ngrok_net \
+  ngrok/ngrok http nginx:80
+
+docker container run --rm -it \
+  --name nginx \
+  --network ngrok_net \
+  nginx
+```
+
+<br>
+
 ## Links
--[Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
--[Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
--[Otserv Brasil: Tutoriais Infraestrutura](https://forums.otserv.com.br/index.php?/forums/forum/445-infraestrutura/)
+- [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
+- [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
+- [Otserv Brasil: Tutoriais Infraestrutura](https://forums.otserv.com.br/index.php?/forums/forum/445-infraestrutura/)
