@@ -41,7 +41,9 @@ Supondo que o download do client ja tenha sido feito a partir do repositório [o
 
 Após a instalação do [notepad++](https://notepad-plus-plus.org/downloads/) clique com o botão direito do mouse sob o arquivo `/bin/127.0.0.1_client.exe` e em abrir com notepad++.
 
-Selecione as linhas abaixo e veja que existe uma série de espaços em branco após a URL, a quantidade de espaços deve se balanceada e mantida de acordo com o tamanho da URL. Supondo que a URL original de `loginWebService` possui *dez caracteres* e foi substituida por uma URL de *quinze caracteres* será preciso excluir *cinco espaços em branco* após a URL e vice-versa.
+Selecione as linhas abaixo e veja que existe uma série de espaços em branco após a URL, a quantidade de espaços deve se balanceada e mantida de acordo com o tamanho da URL. 
+
+Supondo que a URL original de `loginWebService` possui *dez caracteres* e foi substituida por uma URL de *quinze caracteres* , será preciso excluir *cinco espaços em branco* após a URL.
 
 Se a URL que será substituída é menor, será preciso adicionar espaços.
 
