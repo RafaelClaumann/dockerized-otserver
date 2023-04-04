@@ -25,13 +25,20 @@ O schema do banco de dados e algumas contas são criados de forma automática na
 `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
 
-## Informações Importantes
+## Informações importantes
 Para acessar o otserver é preciso de um client [Tibia](http://tibia.com/) versão 12 ou superior com `loginWebService` e `clientWebService` apontando para http://127.0.0.1:8080/login.php.
 
 Os downloads do `Tibia Client 12x` e do `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
 O phpmyadmin pode ser acessado em http://localhost:9090.
 
+## Contas para login
+As seguintes contas são criadas de forma automática quando o banco de dados MySQL é iniciado.
+| email 	| password 	| chars                                                      	|
+|-------	|----------	|------------------------------------------------------------	|
+| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 		|
+| @b    	| 1        	| ADM1                                                       	|
+| @c    	| 1        	| ADM2                                                       	|
 
 ## Alterando tibia client
 Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado
@@ -43,7 +50,7 @@ Localize as palavras `loginWebService` e `clientWebService` no arquivo aberto co
 As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
 
 É preciso calcular a diferença da quantidade de caracteres entre a URL original e a nova URL. O resultado dessa diferença é a quantidade de espaços em branco que devem ser adicionados ou removidos.
-Supondo que a URL original que possui *dez caracteres* será substituida por uma URL de *quinze caracteres* precisamos adicionar *cinco espaços em branco* após a URL.
+Supondo que a URL original que possui *dez caracteres* será substituida por uma URL de *quinze caracteres*, precisamos adicionar *cinco espaços em branco* após a URL.
 
 - URL original menor que nova URL então adicione espaços
 - URL original maior que nova URL então remova espaços
