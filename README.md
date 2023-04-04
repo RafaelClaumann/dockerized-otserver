@@ -39,11 +39,13 @@ O phpmyadmin pode ser acessado em http://localhost:9090.
 ### Alterando loginWebService e clientWebService do tibia client
 Supondo que o download do client ja tenha sido feito a partir do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary/tags).
 
-Para alterar os valores de `loginWebService` e `clientWebService` é preciso instalar o [notepad++](https://notepad-plus-plus.org/downloads/). Após a instalação do notepad++ clique com o botão direito do mouse sob o arquivo `/bin/127.0.0.1_client.exe` e em abrir com notepad++.
+Após a instalação do [notepad++](https://notepad-plus-plus.org/downloads/) clique com o botão direito do mouse sob o arquivo `/bin/127.0.0.1_client.exe` e em abrir com notepad++.
 
-Cuidado ao alterar os valores de loginWebService e clientWebService pois em ambos existe uma quantidade de espaços após a URL que devem ser mantidos após a alteração.
+Selecione as linhas abaixo e veja que existe uma série de espaços em branco após a URL, a quantidade de espaços deve se balanceada e mantida de acordo com o tamanho da URL. Supondo que a URL original de `loginWebService` possui *dez caracteres* e foi substituida por uma URL de *quinze caracteres* será preciso excluir *cinco espaços em branco* após a URL e vice-versa.
 
-Por exemplo, se a URL original de loginWebService possui 10 caracteres e for trocda por uma URL com 15 caracteres será preciso excluir 5 espaços em branco após a URL.
+Se a URL que será substituída é menor, será preciso adicionar espaços.
+
+Se a URL que será substituída é maior, será preciso remover espaços.
 ``` txt
 loginWebService=http://127.0.0.1:8080/login.php                       
 clientWebService=http://127.0.0.1:8080/login.php                         
