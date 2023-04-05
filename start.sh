@@ -1,3 +1,4 @@
+#!/bin/bash
 export SERVER_NAME=OTServBR
 
 export DATABASE_NAME=otservdb
