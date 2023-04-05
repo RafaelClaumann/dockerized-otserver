@@ -27,17 +27,24 @@ As seguintes contas para login no otserver são criadas na inicialização do My
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
-
 Para acessar o servidor usando o client tibia 12x é preciso alterar os valores das chaves `loginWebService` e `clientWebService`. O valor dessas chaves deve ser `localhost:8080/login.php` para que ao clicar em login a requisição seja encaminhada ao container PHP a as credenciais validadas no MySQL. Veja como realizar as alterações no client seguindo [esse guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
 
 Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações estão presentes na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
 ## Arquivos do repositório
-- No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php. Usando a opção `--download` ou `-d` o script fará o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server`.
+- No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php. O script `start.sh` aceita os seguintes parâmetros
+
+| parâmetro			| descrição																								|
+|-------------------|-------------------------------------------------------------------------------------------------------|
+| -s ou --schema 	| realiza uma cópia do `server/schema.sql` para `sql/00_schema.sql`									 	|
+| -d ou --download	| faz o download e extrai o servidor [canary](https://github.com/opentibiabr/canary) na pasta server/	|
+
+ Usando a opção `--download` ou `-d` o script fará o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server`. A opção `-s` ou `--schema` realizará a cópia do arquivo `otserver/server/schema.sql` para a pasta `otserver/sql/00_schema.sql`. A ordem dos parâmetros não importa, `-d` com `-s` ou `--download` com `-s` etc...
+
 - O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
 - `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor/banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
 - O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
-- O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
+- O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
 - `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
 ## Alterando tibia client
