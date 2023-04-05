@@ -1,27 +1,38 @@
-export SERVER_NAME=OTServBR-Global
+export SERVER_NAME=OTServBR
 
-export DATABASE_NAME=otservglobal
+export DATABASE_NAME=otservdb
 export DATABASE_USER=otserv
 export DATABASE_PASSWORD=noob
 
 export DOCKER_NETWORK_GATEWAY=192.168.128.1
 export DOCKER_NETWORK_CIDR=192.168.128.0/20
 
-# verifica se o usuario quer fazer o download do servidor
-if [ "$1" = "--download" ] || [ "$1" = "-d" ]; then
-    echo "iniciando download do servidor!"
-    wget --quiet \
-         --show-progress \
-         -P server/ https://github.com/opentibiabr/canary/releases/download/v2.6.1/canary-v2.6.1-ubuntu-22.04-executable+server.zip
-    unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip
-    rm -r server/canary-v2.6.1-ubuntu-22.04-executable+server.zip
-    chmod +x server/canary
-    echo "download concluído!"
-fi
+readonly NUM_ARGS=$#
+download=false
+schema=false
+while [ "$1" ]
+do    
+    if [[ "$1" == "-d" ]] || [[ "$1" == "--download" ]] && [ $download == false ]; then
+        echo "iniciando download do servidor!"
+        wget --quiet \
+            --show-progress \
+            -P server/ https://github.com/opentibiabr/canary/releases/download/v2.6.1/canary-v2.6.1-ubuntu-22.04-executable+server.zip
+        unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip
+        rm -r server/canary-v2.6.1-ubuntu-22.04-executable+server.zip
+        chmod +x server/canary
+        echo "download concluído!"
+        download=true
+    fi
 
-# obtendo o schema original do servidor
-rm -r sql/00-schema.sql &> /dev/null
-cp server/schema.sql sql/00-schema.sql
+    if [[ "$1" == "-s" ]] || [[ "$1" == "--schema" ]] && [ $schema == false ]; then
+        echo "copiando schema 'server/schema.sql' para 'otserver/sql/00_schema.sql'";
+        rm -r sql/00_schema.sql &> /dev/null
+        cp server/schema.sql sql/00_schema.sql
+        schema=true
+    fi    
+
+    shift
+done
 
 # iniciando os containers
 docker-compose up -d

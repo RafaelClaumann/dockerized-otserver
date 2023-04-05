@@ -7,11 +7,10 @@ services:
     restart: on-failure
     command: --default-authentication-plugin=mysql_native_password
     environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}    
       MYSQL_USER: ${DATABASE_USER}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_ALLOW_EMPTY_PASSWORD: true
-      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: noob
     networks:
       - otserver
     ports:
@@ -45,7 +44,9 @@ services:
     environment:
       PMA_HOST: mysql-svc
       PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: noob
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: noob      
     networks:
       - otserver
     ports:
