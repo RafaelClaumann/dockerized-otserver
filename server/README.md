@@ -2,13 +2,9 @@
 
 ### Opção 01: clone com git
 ``` bash
-git clone https://github.com/opentibiabr/canary.git
-mv canary/* .
-rm -r canary
-```
-
-### Opção 02: download zip
-``` bash
-# download e unzip na pasta /server
-https://github.com/opentibiabr/canary/archive/refs/heads/main.zip
+wget --quiet \
+     --show-progress \
+     -P server/ https://github.com/opentibiabr/canary/releases/download/v2.6.1/canary-v2.6.1-ubuntu-22.04-executable+server.zip
+unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip
+chmod +x server/canary
 ```

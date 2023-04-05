@@ -5,11 +5,29 @@ Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e exec
 
 <br>
 
+## Iniciar e parar o servidor
+Para iniciar o servidor basta executar o script `start.sh`. É possível usar a opção `--download` ou `-d` para realizar o download e extração do servidor [opentibiabr/canary](https://github.com/opentibiabr/canary) na pasta `server`.
+ 
+O arquivo `destroy.sh` destroi os containers e recursos(_networks_, _containers_, _volumes_) inutlizados do docker.
+
+As seguintes contas são criadas de forma automática quando o banco de dados MySQL é iniciado.
+| email 	| password 	| chars                                                      	|
+|-------	|----------	|------------------------------------------------------------	|
+| @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
+| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 			|
+| @b    	| 1        	| ADM1                                                       	|
+| @c    	| 1        	| ADM2                                                       	|
+
+O login no banco de dados pode ser feito através do `phpMyAdmin` em localhost na porta 9090 com usuário `forgottenserver` e senha `noob`. As configurações do usuário do banco de dados podem ser alteradas no arquivo `start.sh` antes do servidor ser iniciado.
+
+<br>
+
 ## Requisitos
 - docker
 - docker-compose
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 - client tibia 12x
+- unzip
 
 <br>
 
@@ -35,13 +53,7 @@ Para gerenciar o banco de dados MySQL use o phpMyAdmin que estará disponível e
 <br>
 
 ## Contas para login
-As seguintes contas são criadas de forma automática quando o banco de dados MySQL é iniciado.
-| email 	| password 	| chars                                                      	|
-|-------	|----------	|------------------------------------------------------------	|
-| @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
-| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 			|
-| @b    	| 1        	| ADM1                                                       	|
-| @c    	| 1        	| ADM2                                                       	|
+
 
 <br>
 
