@@ -1,7 +1,8 @@
 # Dockerized Tibia OTserver
 
 ## O que tem nesse repositório?
-Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e executar um otserver com banco de dados, gerenciador de banco de dados e servidor web para login.
+Nesse repositório você encontrará scripts shell, arquivos SQL, yaml e PHP que são usados para criar um ambiente com OTserver, banco de dados, gerenciador de banco de dados e servidor web para login em containers docker.
+O objetivo principal é criar o ambiente sem complicações executando um único comando. Todos os arquivos desse repositório foram executados e testaods em sistemas linux.
 
 ## Requisitos
 - docker
@@ -26,40 +27,33 @@ As seguintes contas para login no otserver são criadas na inicialização do My
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
+Para acessar o servidor através do tibia 12x é preciso alterar os valores das chaves `loginWebService` e `clientWebService`. O valor dessas chaves deve ser `localhost:8080/login.php` para que ao clicar em login a requisição seja encaminhada ao container PHP que em seguida validará as credenciais de login no MySQL. Veja como realizar as alterações  no client seguindo [esse guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
+
+Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações estão presentes na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
 ## Arquivos do repositório
-- No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
+- No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php. Usando a opção `-d` ou `--download` o script fará o download e extração do servidor [opentibiabr/canary](https://github.com/opentibiabr/canary) na pasta `server`.
 - O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
-- `site/login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor/banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
+- `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor/banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
 - O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
 - O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
 - `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
-## Informações importantes
-Este repositório não inclui os arquivos do servidor, é preciso realizar o download a partir do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Os arquivos baixados devem ser colocados na pasta `server`.
-
-O servidor pode ser acessado através de um client [Tibia](http://tibia.com/) versão 12x. É preciso alterar os valores das chaves `loginWebService` e `clientWebService` do client para permitir o login em `localhost:8080/login.php`. Veja como realizar as alterações [neste guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
-
-Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
-
-Para gerenciar o banco de dados MySQL use o phpMyAdmin que estará disponível em `localhost:9090`.
-
 ## Alterando tibia client
-Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado
+Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta  `/bin` onde o client foi extraído, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe` e em abrir com notepad++.
 
-Naveque até a pasta  `/bin` onde o client foi extraído, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe` e em *abrir com notepad++*.
-
-Localize as palavras `loginWebService` e `clientWebService` no arquivo aberto com o notepad++ e siga as instruções abaixo.
+Localize as palavras `loginWebService` e `clientWebService` no arquivo aberto com o notepad++ e leia as instruções abaixo.
 
 As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
 
 É preciso calcular a diferença da quantidade de caracteres entre a URL original e a nova URL. O resultado dessa diferença é a quantidade de espaços em branco que devem ser adicionados ou removidos.
-Supondo que a URL original que possui *dez caracteres* será substituida por uma URL de *quinze caracteres*, precisamos adicionar *cinco espaços em branco* após a URL.
 
-- URL original menor que nova URL então adicione espaços
-- URL original maior que nova URL então remova espaços
+Supondo que a URL original possui *dez caracteres* e será substituida por uma URL de *quinze caracteres*, precisamos remover *cinco espaços em branco* após o termino da nova URL.
 
-A URL para `loginWebService` e `clientWebService` são as do quadro abaixo: 
+- NOVA_URL > URL_ORIGINAL -> remova espaços ao final da url
+- NOVA_URL < URL_ORIGINAL -> adicione espaços ao final da url
+
+A URL que deve ser usada em `loginWebService` e `clientWebService` é a do quadro abaixo: 
 ``` txt
 loginWebService=http://127.0.0.1:8080/login.php                       
 clientWebService=http://127.0.0.1:8080/login.php                         
@@ -67,27 +61,16 @@ clientWebService=http://127.0.0.1:8080/login.php
 - [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
 - [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
 
-## Listando as redes do docker
+## Opcional - Gesior2012 ou myAAC
+Os AACs(Automatic Account Creator) citados são sites criados com aparencia e funcionalidades parecidas com as encontradas no site oficial do tibia.
+
+Caso queira instalar um dos AACs [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) será preciso adicionar algumas extensões no container PHP.
+
+Mais informações a respeito das extensões necessárias podem ser encontradas nos repositórios dos respectivos AACs.
 ``` bash
-$docker network list    
-    NETWORK ID     NAME                 DRIVER    SCOPE
-    bd83d906d3d1   bridge               bridge    local
-    2546338521e9   host                 host      local
-    42e631403bda   none                 null      local
-    0a96c09c01b1   opentibia_otserver   bridge    local
-
-$docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' opentibia_otserver
-    192.168.128.1
-
-$docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' opentibia_otserver
-    192.168.128.0/20
-```
-
-<br>
-
-## Gesior2012 e myAAC
-Caso queira instalar os AACs(Automatic Account Creator) [Gesior2012](https://github.com/gesior/Gesior2012) ou [myAAC](https://github.com/otsoft/myaac) será preciso adicionar algumas extensões no container php. Mais informações a respeito das extensões necessárias podem ser encontradas nos repositórios dos respectivos AACs.
-``` bash
+# Os comandos mostrados abaixo devem ser executados dentro do container PHP.
+# docker exec -it php bash
+#
 chmod -R 777 /var/www/*
 apt update && \
 apt install libxml2-dev \
@@ -116,6 +99,28 @@ echo $DOCKER_NETWORK_GATEWAY > site/install/ip.txt
 
 # Gesior2012
 echo $DOCKER_NETWORK_GATEWAY > site/install.txt
+```
+
+---
+
+<br>
+<br>
+<br>
+
+## Listando as redes do docker
+``` bash
+$docker network list    
+    NETWORK ID     NAME                 DRIVER    SCOPE
+    bd83d906d3d1   bridge               bridge    local
+    2546338521e9   host                 host      local
+    42e631403bda   none                 null      local
+    0a96c09c01b1   opentibia_otserver   bridge    local
+
+$docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' opentibia_otserver
+    192.168.128.1
+
+$docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' opentibia_otserver
+    192.168.128.0/20
 ```
 
 <br>
