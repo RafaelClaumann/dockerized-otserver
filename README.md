@@ -13,7 +13,7 @@ O objetivo principal é criar o ambiente sem complicações executando um único
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 
 ## Indo ao que interessa
-Para iniciar o servidor basta executar o script `start.sh`. Caso você ainda não tenha os arquivos do seu servidor na pasta `server`, é possível executar o `start.sh` com a opção `--download` ou `-d`. Essa opção fará o download e extração dos arquivos do servidor [opentibiabr/canary](https://github.com/opentibiabr/canary) na pasta `server`.
+Para iniciar o servidor basta executar o script `start.sh`. Caso você ainda não tenha os arquivos do servidor na pasta `server`, é possível executar o `start.sh` com a opção `--download` ou `-d` para fazer o download e extração dos arquivos do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server`.
  
 O arquivo `destroy.sh` destroi os recursos(_networks_, _containers_, _volumes_) inutilizados do docker.
 
