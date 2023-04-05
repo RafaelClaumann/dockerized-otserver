@@ -1,9 +1,11 @@
 <?php
 
+// as informações do banco de dados são preenchidas automaticamente
+// quando o script `start.sh` é iniciado
 $databaseURL = "192.168.128.1";
-$databaseUser = "forgottenserver";
+$databaseUser = "otserv";
 $databaseUserPassword = "noob";
-$databaseName = "forgottenserver";
+$databaseName = "otservglobal";
 $mysqli = mysqli_connect($databaseURL,$databaseUser, $databaseUserPassword, $databaseName);
 
 $request = json_decode(file_get_contents('php://input'));

@@ -1,11 +1,11 @@
 export SERVER_NAME=OTServBR-Global
 
-export DATABASE_USER=forgottenserver
+export DATABASE_NAME=otservglobal
+export DATABASE_USER=otserv
 export DATABASE_PASSWORD=noob
-export DATABASE_NAME=forgottenserver
 
-export DOCKER_NETWORK_CIDR=192.168.128.0/20
 export DOCKER_NETWORK_GATEWAY=192.168.128.1
+export DOCKER_NETWORK_CIDR=192.168.128.0/20
 
 # verifica se o usuario quer fazer o download do servidor
 if [ "$1" = "--download" ] || [ "$1" = "-d" ]; then
@@ -18,7 +18,6 @@ if [ "$1" = "--download" ] || [ "$1" = "-d" ]; then
     chmod +x server/canary
     echo "download concluído!"
 fi
-
 
 # obtendo o schema original do servidor
 rm -r sql/00-schema.sql &> /dev/null
@@ -43,6 +42,7 @@ sed -i "s/^\$databaseName\s.*=\s.*;$/\$databaseName = \"$DATABASE_NAME\";/g" sit
 
 # instalando extensão no container php
 if [ "$(docker exec php bash -c "php -m | grep mysqli")" = "" ]; then
+    echo
     echo "configuring php extensions"
     echo
     docker exec -i php bash <<-EOF
@@ -59,5 +59,18 @@ echo "is mysql      running? $(docker inspect -f {{.State.Running}} mysql)"
 echo "is server     running? $(docker inspect -f {{.State.Running}} server)"
 echo "is phpmyadmin running? $(docker inspect -f {{.State.Running}} phpmyadmin)"
 echo
-echo "otserver_otserver network gateway: $DOCKER_NETWORK_GATEWAY"
+
+echo  
+echo "docker network gateway address    ->  $DOCKER_NETWORK_GATEWAY"
+echo "docker subnet cidr                ->  $DOCKER_NETWORK_CIDR"
+echo
+echo "phpMyAdmin address                ->  http://localhost:9090/"
+echo "php login server address          ->  http://localhost:8080/login.php"
+echo
+echo "server name                       ->  $SERVER_NAME"
+echo "database name                     ->  $DATABASE_NAME"
+echo "database user/pass                ->  $DATABASE_USER / $DATABASE_PASSWORD"
+echo
+
+echo "inicialização concluida"
 echo

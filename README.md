@@ -13,11 +13,11 @@ O objetivo principal é criar o ambiente sem complicações executando um único
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 
 ## Indo ao que interessa
-Para iniciar o servidor basta executar o script `start.sh`. Caso você ainda não tenha os arquivos do servidor na pasta `server`, é possível executar o `start.sh` com a opção `--download` ou `-d` para fazer o download e extração dos arquivos do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server`.
+Para iniciar o servidor basta executar o script `start.sh`. O script oferece a opção `--download` ou `-d` para fazer o download e extração dos arquivos do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server`.
  
 O arquivo `destroy.sh` destroi os recursos(_networks_, _containers_, _volumes_) inutilizados do docker.
 
-O banco de dados pode ser gerenciado através do `phpMyAdmin`, ele fica exposto em localhost na porta 9090. As credenciais para acessa-lo são usuário `forgottenserver` e senha `noob`. É possível alterar as credenciais do banco de dados no arquivo `start.sh` antes do servidor ser iniciado.
+O banco de dados pode ser gerenciado através do `phpMyAdmin`, ele fica exposto em localhost na porta 9090. As credenciais para acessa-lo são: usuário=`otserv` senha=`noob`. É possível alterar as credenciais do banco de dados no arquivo `start.sh` antes de iniciar o servidor.
 
 As seguintes contas para login no otserver são criadas na inicialização do MySQL.
 | email 	| password 	| chars                                                      	|
@@ -27,12 +27,13 @@ As seguintes contas para login no otserver são criadas na inicialização do My
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
-Para acessar o servidor através do tibia 12x é preciso alterar os valores das chaves `loginWebService` e `clientWebService`. O valor dessas chaves deve ser `localhost:8080/login.php` para que ao clicar em login a requisição seja encaminhada ao container PHP que em seguida validará as credenciais de login no MySQL. Veja como realizar as alterações  no client seguindo [esse guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
+
+Para acessar o servidor usando o client tibia 12x é preciso alterar os valores das chaves `loginWebService` e `clientWebService`. O valor dessas chaves deve ser `localhost:8080/login.php` para que ao clicar em login a requisição seja encaminhada ao container PHP a as credenciais validadas no MySQL. Veja como realizar as alterações no client seguindo [esse guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
 
 Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações estão presentes na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
 ## Arquivos do repositório
-- No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php. Usando a opção `-d` ou `--download` o script fará o download e extração do servidor [opentibiabr/canary](https://github.com/opentibiabr/canary) na pasta `server`.
+- No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php. Usando a opção `--download` ou `-d` o script fará o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server`.
 - O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
 - `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor/banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
 - O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
@@ -53,7 +54,6 @@ Supondo que a URL original possui *dez caracteres* e será substituida por uma U
 - NOVA_URL > URL_ORIGINAL -> remova espaços ao final da url
 - NOVA_URL < URL_ORIGINAL -> adicione espaços ao final da url
 
-A URL que deve ser usada em `loginWebService` e `clientWebService` é a do quadro abaixo: 
 ``` txt
 loginWebService=http://127.0.0.1:8080/login.php                       
 clientWebService=http://127.0.0.1:8080/login.php                         
@@ -91,18 +91,31 @@ docker-php-ext-install zip
 apachectl restart
 ```
 
-Para instalar o Gesior2012 é preciso inserir o endereço IP do gateway da rede docker em `site/install.txt`. Para a instalação do myAAC o endereço deverá ser inserido em `site/install/ip.txt`. O endereço do gateway de rede pode ser obtido na varivel `DOCKER_NETWORK_GATEWAY` do arquivo `start.sh` ou através do comando `docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' otserver_otserver`.
+Para instalar o Gesior2012 é preciso inserir o endereço IP do gateway da rede docker em `site/install.txt`, enquanto no myAAC o endereço deve ser inserido em `site/install/ip.txt`.
+
+O endereço do gateway de rede pode ser obtido na varivel `DOCKER_NETWORK_GATEWAY` do arquivo `start.sh` ou através do comando `docker network inspect --format='{{range .IPAM.Config}}{{.Gateway}}{{end}}' otserver_otserver`.
 ``` bash
-# instalacao myAAC
+# instalacao myAAC, endereço IP em site/install/ip.txt
 rm -r site/config.local.php &> /dev/null  # removendo configuração de instalações anteriores
 echo $DOCKER_NETWORK_GATEWAY > site/install/ip.txt
 
-# Gesior2012
+# instalacao Gesior2012, endereço IP em site/install.txt
 echo $DOCKER_NETWORK_GATEWAY > site/install.txt
 ```
 
+## Links
+- [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
+- [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
+- [Otserv Brasil: Tutoriais Infraestrutura](https://forums.otserv.com.br/index.php?/forums/forum/445-infraestrutura/)
+
 ---
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -238,8 +251,3 @@ docker container run --rm -it \
 ```
 
 <br>
-
-## Links
-- [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
-- [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
-- [Otserv Brasil: Tutoriais Infraestrutura](https://forums.otserv.com.br/index.php?/forums/forum/445-infraestrutura/)

@@ -26,15 +26,13 @@ INSERT INTO `players`
     `level`, `vocation`, `health`, `healthmax`,
     `experience`,`maglevel`,`mana`, `manamax`,
     `soul`, `town_id`, `cap`, `sex`, `balance`,
-    `skill_dist`, `skill_shielding`, `prey_wildcard`, `forge_dusts`,
-    `forge_dust_level`, `conditions`)
+    `skill_shielding`, `prey_wildcard`, `forge_dusts`, `forge_dust_level`, `conditions`)
 VALUES
-    (0, 'Paladin', 1, 100,
-    800, 7, 8105, 8105,
-    8469559800, 37, 11920, 11920, 
-    200, 8, 16310, 1, 100000000,
-    140, 106, 50, 215,
-    215, '');
+    (0, 'Sorcerer', 1, 100,
+    800, 5, 4145, 4145,
+    8469559800, 120, 23800, 23800, 
+    200, 8, 8390, 1, 100000000,
+    43, 50, 215, 215, ''); 
 
 INSERT INTO `players`
     (`id`, `name`, `group_id`, `account_id`,
@@ -44,23 +42,25 @@ INSERT INTO `players`
     `skill_shielding`, `prey_wildcard`, `forge_dusts`, `forge_dust_level`, `conditions`)
 VALUES
     (0, 'Druid', 1, 100,
-    800, 5, 4145, 4145,
+    800, 6, 4145, 4145,
     8469559800, 120, 23800, 23800, 
     200, 8, 8390, 1, 100000000,
-    43, 50, 215, 215, '');
+    43, 50, 215, 215, '');       
 
 INSERT INTO `players`
     (`id`, `name`, `group_id`, `account_id`,
     `level`, `vocation`, `health`, `healthmax`,
     `experience`,`maglevel`,`mana`, `manamax`,
     `soul`, `town_id`, `cap`, `sex`, `balance`,
-    `skill_shielding`, `prey_wildcard`, `forge_dusts`, `forge_dust_level`, `conditions`)
+    `skill_dist`, `skill_shielding`, `prey_wildcard`, `forge_dusts`,
+    `forge_dust_level`, `conditions`)
 VALUES
-    (0, 'Sorcerer', 1, 100,
-    800, 5, 4145, 4145,
-    8469559800, 120, 23800, 23800, 
-    200, 8, 8390, 1, 100000000,
-    43, 50, 215, 215, '');
+    (0, 'Paladin', 1, 100,
+    800, 7, 8105, 8105,
+    8469559800, 37, 11920, 11920, 
+    200, 8, 16310, 1, 100000000,
+    140, 106, 50, 215,
+    215, '');
 
 INSERT INTO `players`
     (`id`, `name`, `group_id`, `account_id`,
