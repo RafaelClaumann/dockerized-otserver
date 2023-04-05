@@ -3,14 +3,22 @@
 ## O que tem nesse repositório?
 Alguns scripts shell, arquivos sql e arquivos yaml para criar um ambiente e executar um otserver com banco de dados, gerenciador de banco de dados e servidor web para login.
 
-<br>
+## Requisitos
+- docker
+- docker-compose
+- unzip
+- wget
+- client tibia 12x 
+- dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 
-## Iniciar e parar o servidor
-Para iniciar o servidor basta executar o script `start.sh`. É possível usar a opção `--download` ou `-d` para realizar o download e extração do servidor [opentibiabr/canary](https://github.com/opentibiabr/canary) na pasta `server`.
+## Indo ao que interessa
+Para iniciar o servidor basta executar o script `start.sh`. Caso você ainda não tenha os arquivos do seu servidor na pasta `server`, é possível executar o `start.sh` com a opção `--download` ou `-d`. Essa opção fará o download e extração dos arquivos do servidor [opentibiabr/canary](https://github.com/opentibiabr/canary) na pasta `server`.
  
-O arquivo `destroy.sh` destroi os containers e recursos(_networks_, _containers_, _volumes_) inutlizados do docker.
+O arquivo `destroy.sh` destroi os recursos(_networks_, _containers_, _volumes_) inutilizados do docker.
 
-As seguintes contas são criadas de forma automática quando o banco de dados MySQL é iniciado.
+O banco de dados pode ser gerenciado através do `phpMyAdmin`, ele fica exposto em localhost na porta 9090. As credenciais para acessa-lo são usuário `forgottenserver` e senha `noob`. É possível alterar as credenciais do banco de dados no arquivo `start.sh` antes do servidor ser iniciado.
+
+As seguintes contas para login no otserver são criadas na inicialização do MySQL.
 | email 	| password 	| chars                                                      	|
 |-------	|----------	|------------------------------------------------------------	|
 | @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
@@ -18,18 +26,6 @@ As seguintes contas são criadas de forma automática quando o banco de dados My
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
-O login no banco de dados pode ser feito através do `phpMyAdmin` em localhost na porta 9090 com usuário `forgottenserver` e senha `noob`. As configurações do usuário do banco de dados podem ser alteradas no arquivo `start.sh` antes do servidor ser iniciado.
-
-<br>
-
-## Requisitos
-- docker
-- docker-compose
-- dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
-- client tibia 12x
-- unzip
-
-<br>
 
 ## Arquivos do repositório
 - No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php.
@@ -39,8 +35,6 @@ O login no banco de dados pode ser feito através do `phpMyAdmin` em localhost n
 - O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00-schema.sql) e [data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01-data.sql).
 - `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
 
-<br>
-
 ## Informações importantes
 Este repositório não inclui os arquivos do servidor, é preciso realizar o download a partir do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Os arquivos baixados devem ser colocados na pasta `server`.
 
@@ -49,13 +43,6 @@ O servidor pode ser acessado através de um client [Tibia](http://tibia.com/) ve
 Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações podem ser obtidas na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
 Para gerenciar o banco de dados MySQL use o phpMyAdmin que estará disponível em `localhost:9090`.
-
-<br>
-
-## Contas para login
-
-
-<br>
 
 ## Alterando tibia client
 Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado
@@ -79,8 +66,6 @@ clientWebService=http://127.0.0.1:8080/login.php
 ```
 - [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
 - [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
-
-<br>
 
 ## Listando as redes do docker
 ``` bash
