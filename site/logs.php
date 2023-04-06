@@ -15,5 +15,14 @@
 
     $serverIP = getenv("DOCKER_NETWORK_GATEWAY");
     echo nl2br("Server IP: ". $serverIP ."\n");
+
+    $databaseURL = "192.168.128.1";
+    $databaseUser = "otserv";
+    $databaseUserPassword = "noob";
+    $databaseName = "otservdb";
+    $mysqli = mysqli_connect($databaseURL,$databaseUser, $databaseUserPassword, $databaseName);
+
+    $query = $mysqli->query("SELECT * FROM accounts WHERE `name` = '@a'");
+    $account = $query->fetch_object();
  ?>
  

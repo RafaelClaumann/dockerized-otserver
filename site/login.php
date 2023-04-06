@@ -17,6 +17,7 @@ $characters = [];
 // buscar conta, validar email e password
 $query = $mysqli->query("SELECT * FROM accounts WHERE email = '$request->email'");
 $account = $query->fetch_object();
+file_put_contents('01_account.json', json_encode($account));
 
 if (strcmp($account->password, $current_password) != 0) {
 	sendError(($request->email != false ? 'Email' : 'Account name') . ' or password is not correct.');
@@ -40,6 +41,7 @@ if($query) {
 	foreach ($players as $player) {
 		$characters[] = create_char($player, $highestLevelId);
 	}
+	file_put_contents('02_characters.json', json_encode($characters));
 }
 
 $worlds = [[
@@ -74,10 +76,11 @@ $session = [
 	'tournamentticketpurchasestate' => 0,
 	'emailcoderequest' => false
 ];
+file_put_contents('03_session_key.json', json_encode($session));
 
 $playdata = compact('worlds', 'characters');
 $responseBody = compact('session', 'playdata');
-file_put_contents('01_responseBody.json', json_encode($responseBody));
+file_put_contents('04_responseBody.json', json_encode($responseBody));
 die(json_encode($responseBody));
 
 function create_char($player, $highestLevelId) {

@@ -26,7 +26,12 @@ services:
         condition: service_started
     restart: on-failure
     working_dir: /server
-    entrypoint: ./canary
+    entrypoint: |
+      /bin/bash -c "
+        apt update && \
+        apt install libgomp1 && \
+        ./canary
+      "
     networks:
       - otserver
     ports:

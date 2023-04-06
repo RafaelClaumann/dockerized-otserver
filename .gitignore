@@ -2,7 +2,10 @@ server/*
 !README.md
 
 site/00_resquestBody.json
-site/01_responseBody.json
+site/01_account.json
+site/02_characters.json
+site/03_session_key.json
+site/04_responseBody.json
 
 .ngrok_token
 
