@@ -13,7 +13,7 @@ Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP par
 - unzip
 - wget
 - client tibia 12x 
-- dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
+- as dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 
 ## Indo ao que interessa
 Para iniciar o servidor basta executar o script `start.sh`.
