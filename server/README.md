@@ -1,6 +1,6 @@
 # Download OpenTibiaBR - Canary
 
-# Opção 01: clone com git
+# Opção 00: clone com git
 ``` bash
 wget --quiet \
      --show-progress \
