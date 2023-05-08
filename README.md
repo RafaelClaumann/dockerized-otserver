@@ -1,7 +1,7 @@
 # Dockerized Tibia OTserver
 
 ## O que tem nesse repositório?
-Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP usados para iniciar um ambiente docker com quatro containers onde cada container possui uma responsabilidade específica:
+Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP para iniciar um ambiente docker e executar um OTserver(_open tibia server_). Quatro containers são utilizados e cada um deles poussui uma responsabilidade específica:
 - OTserver (_open tibia server_)
 - banco de dados (_mysql_)
 - gerenciador de banco de dados (_phpmyadmin_)
