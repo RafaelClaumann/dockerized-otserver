@@ -7,8 +7,6 @@ Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP usa
 - gerenciador de banco de dados (_phpmyadmin_)
 - servidor web para login (_php+apache_)
 
-O objetivo é criar o ambiente sem complicações executando um único script shell.
-
 ## Requisitos
 - docker
 - docker-compose
