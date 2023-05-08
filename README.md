@@ -1,8 +1,13 @@
 # Dockerized Tibia OTserver
 
 ## O que tem nesse repositório?
-Nesse repositório você encontrará scripts shell, arquivos SQL, yaml e PHP que são usados para criar um ambiente com OTserver, banco de dados, gerenciador de banco de dados e servidor web para login em containers docker.
-O objetivo principal é criar o ambiente sem complicações executando um único comando. Todos os arquivos desse repositório foram executados e testaods em sistemas linux.
+Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP usados para iniciar um ambiente docker com quatro containers onde cada container possui uma responsabilidade específica:
+- OTserver (_open tibia server_)
+- banco de dados (_mysql_)
+- gerenciador de banco de dados (_phpmyadmin_)
+- servidor web para login (_php+apache_)
+
+O objetivo é criar o ambiente sem complicações executando um único script shell.
 
 ## Requisitos
 - docker
@@ -13,11 +18,13 @@ O objetivo principal é criar o ambiente sem complicações executando um único
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 
 ## Indo ao que interessa
-Para iniciar o servidor basta executar o script `start.sh`. O script oferece a opção `--download` ou `-d` para fazer o download e extração dos arquivos do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server`.
- 
-O arquivo `destroy.sh` destroi os recursos(_networks_, _containers_, _volumes_) inutilizados do docker.
+Para iniciar o servidor basta executar o script `start.sh`.
 
-O banco de dados pode ser gerenciado através do `phpMyAdmin`, ele fica exposto em localhost na porta 9090. As credenciais para acessa-lo são: usuário=`otserv` senha=`noob`. É possível alterar as credenciais do banco de dados no arquivo `start.sh` antes de iniciar o servidor.
+O banco de dados pode ser gerenciado através do `phpMyAdmin`, ele fica exposto em localhost na porta 9090 e as credenciais para acessa-lo são: `otserv`/`noob`.
+
+Para acessar o servidor usando o client tibia 12x é preciso alterar os valores das chaves `loginWebService` e `clientWebService` do client([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)).
+
+Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
 
 As seguintes contas para login no otserver são criadas na inicialização do MySQL.
 | email 	| password 	| chars                                                      	|
@@ -26,10 +33,6 @@ As seguintes contas para login no otserver são criadas na inicialização do My
 | @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 			|
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
-
-Para acessar o servidor usando o client tibia 12x é preciso alterar os valores das chaves `loginWebService` e `clientWebService`. O valor dessas chaves deve ser `localhost:8080/login.php` para que ao clicar em login a requisição seja encaminhada ao container PHP a as credenciais validadas no MySQL. Veja como realizar as alterações no client seguindo [esse guia](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client).
-
-Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). Demais informações estão presentes na [documentação opentibiabr canary](https://docs.opentibiabr.com/home/introduction).
 
 ## Arquivos do repositório
 No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php. O script `start.sh` pode ser iniciado com os parâmetros `--download` ou `--schema`, a ordem não importa.
