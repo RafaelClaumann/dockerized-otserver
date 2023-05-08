@@ -35,12 +35,12 @@ As seguintes contas para login no otserver são criadas na inicialização do My
 | @c    	| 1        	| ADM2                                                       	|
 
 ## Arquivos do repositório
-No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso ajustar as configurações de rede. O arquivo ainda é responsável executar os comandos que iniciam os containers docker, realizam alterações nos arquivos `server/config.lua`, `site/login.php` e instalam extensões no container php. O script `start.sh` pode ser iniciado com os parâmetros `--download` ou `--schema`, a ordem não importa.
+No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso alterar as configurações de rede. O arquivo ainda é responsável por iniciar os containers docker, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php. O script `start.sh` pode ser iniciado com os parâmetros `--download` ou `--schema`, a ordem não importa.
 
 | parâmetro			| descrição																								|
 |-------------------|-------------------------------------------------------------------------------------------------------|
 | -s ou --schema 	| realiza uma cópia do `server/schema.sql` para `sql/00_schema.sql`									 	|
-| -d ou --download	| faz o download e extrai o servidor [canary](https://github.com/opentibiabr/canary) na pasta server/	|
+| -d ou --download	| faz o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta server/	|
 
 
 O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
