@@ -1,4 +1,5 @@
 #!/bin/bash
+
 export SERVER_NAME=OTServBR
 
 export DATABASE_NAME=otservdb
@@ -11,9 +12,10 @@ export DOCKER_NETWORK_CIDR=192.168.128.0/20
 ################################
 #### como executar o script ####
 ################################
-#  sh ./start.sh --download --schema   # faz o download do servidor e copia o 'server/schema.sql' para 'sql/00_schema.sql'
-#  sh ./start.sh -d -s                 # faz o download do servidor copia o 'server/schema.sql' para 'sql/00_schema.sql'
-#  sh ./start.sh                       # espera que o servidor e schema.sql estejam em 'otserver/server'
+#  sh ./start.sh -d -s                 # faz o download do servidor em 'server/' e copia o 'server/schema.sql' para 'sql/00_schema.sql'
+#  sh ./start.sh -d                    # faz o download do servidor em 'server/'
+#  sh ./start.sh -s                    # copia o 'server/schema.sql' para 'sql/00_schema.sql'
+#  sh ./start.sh                       # espera que o servidor esteja em 'server/' e schema.sql em 'sql/00_schema.sql'
 
 # avalia se o download do servidor e/ou copia do schema foi solicitado pelo usuário
 # a ordem dos parametros(--download e --schema) ou suas abreviações(-d e -s) não faz diferença
