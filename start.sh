@@ -12,10 +12,15 @@ export DOCKER_NETWORK_CIDR=192.168.128.0/20
 ################################
 #### como executar o script ####
 ################################
-#  sh ./start.sh -d -s                 # faz o download do servidor em 'server/' e copia o 'server/schema.sql' para 'sql/00_schema.sql'
-#  sh ./start.sh -d                    # faz o download do servidor em 'server/'
-#  sh ./start.sh -s                    # copia o 'server/schema.sql' para 'sql/00_schema.sql'
-#  sh ./start.sh                       # espera que o servidor esteja em 'server/' e schema.sql em 'sql/00_schema.sql'
+#  sh ./start.sh -d -s           # faz o download do servidor em 'server/' e copia o 'server/schema.sql' para 'sql/00_schema.sql'
+#                                  qualquer schema em 'sql/00_schema.sql' será sobrescrito!
+#
+#  sh ./start.sh -d              # faz o download do servidor em 'server/', espera que já exista o schema.sql em 'sql/00_schema.sql'
+#
+#  sh ./start.sh -s              # copia o 'server/schema.sql' para 'sql/00_schema.sql' e espera que o 'server/' ja tenha sido previamente baixado
+#
+#  sh ./start.sh                 # espera que o servidor esteja em 'server/' e schema.sql em 'sql/00_schema.sql'
+#
 
 # avalia se o download do servidor e/ou copia do schema foi solicitado pelo usuário
 # a ordem dos parametros(--download e --schema) ou suas abreviações(-d e -s) não faz diferença
@@ -23,13 +28,16 @@ readonly NUM_ARGS=$#
 download=false
 schema=false
 while [ "$1" ]
-do    
+do 
+    # realiza o download do servidor quando o parâmetro posicional '-d' ou '--download' é fornecido
     if [[ "$1" == "-d" ]] || [[ "$1" == "--download" ]] && [ $download == false ]; then
         printf "[INFO] iniciando download do servidor! \n"
 
         download_url=https://github.com/opentibiabr/canary/releases/download/v2.6.1/canary-v2.6.1-ubuntu-22.04-executable+server.zip
         wget --show-progress -P server/ $download_url
 
+        # verifica a saída do comando anterior
+        # se a saída for diferente de 0 significa que ocorreu um erro
         # https://www.gnu.org/software/wget/manual/html_node/Exit-Status.html
         exit_status=$?
         if [ ! $exit_status -eq 0 ]; then
@@ -37,6 +45,9 @@ do
             exit 1
         fi
 
+        # descompacta os arquivos do servidor na pasta 'server/'
+        # remove o arquivo zip
+        # altera as permissões do arquivo 'canary' para que seja possível executa-lo
         unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip &> /dev/null
         rm -r server/canary-v2.6.1-ubuntu-22.04-executable+server.zip
         chmod +x server/canary
@@ -44,12 +55,19 @@ do
         download=true
     fi
 
+    # realiza uma cópia do 'server/schema.sql' para 'sql/00_schema.sql' quando o parâmetro posicional '-s' ou '--schema' é fornecido
+    # se você tem um schema customizado em 'sql/00_schema.sql' e não quer que ele seja substituído não use '-s' ou '--schema'
     if [[ "$1" == "-s" ]] || [[ "$1" == "--schema" ]] && [ $schema == false ]; then
+        # avalia se o arquivo 'server/schema.sql' existe
+        # caso negativo, a execução do script é interrompida
         if [ ! -f "server/schema.sql" ]; then
             echo "[ERROR] arquivo 'otserver/server/schema.sql' não encontrado"
             exit 1
         fi
 
+        # !!!!!!
+        # remove o schema antigo de 'sql/00_schema.sql'
+        # copia o 'server/schema.sql' para 'sql/00_schema.sql'
         echo "[INFO] copiando schema 'otserver/server/schema.sql' para 'otserver/sql/00_schema.sql'"
         rm -r sql/00_schema.sql &> /dev/null
         cp server/schema.sql sql/00_schema.sql
@@ -59,7 +77,9 @@ do
     shift
 done
 
-# verifica se alguns arquivos e diretórios do servidor existem
+# verifica se alguns arquivos e diretórios do servidor existem,
+# se qualquer arquivo ou diretório listado abaixo não estiver presente
+# na pasta 'server/' o script será interrompido.
 if [ ! -d "server/" ]                       ||
    [ ! -d "server/data" ]                   ||
    [ ! -d "server/data-otservbr-global" ]   ||   
@@ -69,7 +89,7 @@ then
    exit 1
 fi
 
-# garante que o 'sql/00_schema.sql' existe antes de iniciar o servidor
+# verifica se o arquivo 'sql/00_schema.sql' existe antes de iniciar o servidor
 # copia o 'server/schema.sql' para 'sql/00_schema.sql'
 if [ ! -f "sql/00_schema.sql" ] && [ -f "server/schema.sql" ]; then
     echo "[INFO] copiando schema 'otserver/server/schema.sql' para 'otserver/sql/00_schema.sql'"
