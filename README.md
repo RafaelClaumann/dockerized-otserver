@@ -1,13 +1,15 @@
 # Dockerized Tibia OTserver
 
-## O que tem nesse repositório?
-Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP para iniciar um ambiente docker e executar um OTserver(_open tibia server_). Quatro containers são utilizados e cada um deles poussui uma responsabilidade específica:
+### O que tem nesse repositório?
+Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP para iniciar um ambiente docker e executar um OTserver(_open tibia server_).
+
+Quatro containers são utilizados e cada um deles poussui uma responsabilidade específica:
 - OTserver (_open tibia server_)
 - banco de dados (_mysql_)
 - gerenciador de banco de dados (_phpmyadmin_)
 - servidor web para login (_php+apache_)
 
-## Requisitos
+### Requisitos
 - docker
 - docker-compose
 - unzip
@@ -15,16 +17,14 @@ Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP par
 - client tibia 12x 
 - as dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
 
-## Indo ao que interessa
+### Indo ao que interessa
 Para iniciar o servidor basta executar o script `start.sh`.
 
-O banco de dados pode ser gerenciado através do `phpMyAdmin`, ele fica exposto em localhost na porta 9090 e as credenciais para acessa-lo são: `otserv`/`noob`.
+O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em localhost:9090 e as credenciais para acessa-lo são: `otserv`/`noob`.
 
-Para acessar o servidor usando o client tibia 12x é preciso alterar os valores das chaves `loginWebService` e `clientWebService` do client([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)).
+O servidor pode ser acessado usando o `Tibia Client 12x`, mas para isso é preciso alterar os valores das chaves `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)). O download do `Tibia Client 12x` pode ser feito através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
 
-Os downloads do `Tibia Client 12x` e `Servidor OpenTibiaBR Canary` podem ser feitos através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
-
-As seguintes contas para login no otserver são criadas na inicialização do MySQL.
+As contas listadas abaixo são criadas na inicialização do MySQL.
 | email 	| password 	| chars                                                      	|
 |-------	|----------	|------------------------------------------------------------	|
 | @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
@@ -32,39 +32,35 @@ As seguintes contas para login no otserver são criadas na inicialização do My
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
-## Arquivos do repositório
-No arquivo `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker(_gateway e subnet CIDR_). Em poucos casos será preciso alterar as configurações de rede. O arquivo ainda é responsável por iniciar os containers docker, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php. O script `start.sh` pode ser iniciado com os parâmetros `--download` ou `--schema`, a ordem não importa.
+### Arquivos do repositório
+No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php.
 
+Parâmetros para iniciar o script `start.sh`.
 | parâmetro			| descrição																								|
 |-------------------|-------------------------------------------------------------------------------------------------------|
-| -s ou --schema 	| realiza uma cópia do `server/schema.sql` para `sql/00_schema.sql`									 	|
+| -s ou --schema 	| copia o `server/schema.sql` para `sql/00_schema.sql`									 	|
 | -d ou --download	| faz o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta server/	|
 
 
-O arquivo `destroy.sh` é usado para limpar o ambiente. Excuta-lo é uma boa opção para parar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os dados armazenados nos containers são perdidos quando o ambiente é limpo.
+O script `destroy.sh` é usado para limpar o ambiente, você pode usa-lo para encerrar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os containers são encerrados e seus dados são perdidos.
 
-`login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php). O objetivo desta simplificação é conseguir realizar a autenticação no servidor/banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_) toda vez que o ambiente for iniciado ou reiniciado. Só é possível criar contas e personagens diretamente no banco de dados.
-
-O arquivo `logs.php` serve para fins de debug e pode ser acessado em `localhost:8080/logs.php`.
+O `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php), o objetivo desta simplificação é facilitar a autenticação no servidor e banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_). A autenticação nos otservers 12x acontece através requisições HTTP nas URLs dos campos `loginWebService` e `clientWebService` do próprio client, por isso é preciso expor um servidor web com acesso ao banco de dados que armazena as contas e personagens. O servidor não tem uma interface web, só é possível criar contas e personagens no banco de dados.
 
 O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
 
-`docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o arquivo `start.sh` é executado. Os campos no formato `${SERVER_NAME}` referenciam e obtém os valores das variaveis exportadas pelo arquivo `start.sh`.
+`docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${SERVER_NAME}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
 
-## Alterando tibia client
-Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta  `/bin` do client extraído, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe` e em abrir com notepad++.
+### Alterando tibia client
+Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta  `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe` e em abrir com notepad++.
 
-Localize as palavras `loginWebService` e `clientWebService` no arquivo aberto com o notepad++ e leia as instruções abaixo.
+Localize as palavras `loginWebService` e `clientWebService` no arquivo aberto com o notepad++. O valor destes campos deve ser igual a URL do webserver, isto é, `http://127.0.0.1:8080/login.php` exposta no container `php:8.0-apache`.
+
+Supondo que as URLs originais(`loginWebService`, `clientWebService`) possuem *dez caracteres* e será substituida por uma URL de *quinze caracteres*, precisamos remover *cinco espaços em branco* após o termino da nova URL.
+
+- NOVA_URL maior_que URL_ORIGINAL -> remova espaços ao final da url
+- NOVA_URL menor_que URL_ORIGINAL -> adicione espaços ao final da url
 
 As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
-
-É preciso calcular a diferença da quantidade de caracteres entre a URL original e a nova URL. O resultado dessa diferença é a quantidade de espaços em branco que devem ser adicionados ou removidos.
-
-Supondo que a URL original possui *dez caracteres* e será substituida por uma URL de *quinze caracteres*, precisamos remover *cinco espaços em branco* após o termino da nova URL.
-
-- NOVA_URL > URL_ORIGINAL -> remova espaços ao final da url
-- NOVA_URL < URL_ORIGINAL -> adicione espaços ao final da url
-
 ``` txt
 loginWebService=http://127.0.0.1:8080/login.php                       
 clientWebService=http://127.0.0.1:8080/login.php                         
