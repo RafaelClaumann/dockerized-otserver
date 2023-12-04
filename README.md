@@ -4,10 +4,10 @@
 Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP para iniciar um ambiente docker e executar um OTserver(_open tibia server_).
 
 Quatro containers são utilizados e cada um deles poussui uma responsabilidade específica:
-- OTserver (_open tibia server_)
-- banco de dados (_mysql_)
-- gerenciador de banco de dados (_phpmyadmin_)
-- servidor web para login (_php+apache_)
+- OTserver(_open tibia server_)
+- banco de dados(_mysql_)
+- gerenciador de banco de dados(_phpmyadmin_)
+- servidor web para login(_php+apache_)
 
 ### Requisitos
 - docker
@@ -15,16 +15,16 @@ Quatro containers são utilizados e cada um deles poussui uma responsabilidade e
 - unzip
 - wget
 - client tibia 12x 
-- as dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04) podem ser necessarias para iniciar o servidor
+- dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04)
 
 ### Indo ao que interessa
 Para iniciar o servidor basta executar o script `start.sh`.
 
-O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em localhost:9090 e as credenciais para acessa-lo são: `otserv`/`noob`.
+O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
 
-O servidor pode ser acessado usando o `Tibia Client 12x`, mas para isso é preciso alterar os valores das chaves `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)). O download do `Tibia Client 12x` pode ser feito através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
+O servidor pode ser acessado usando o `Tibia Client 12x`, porém é preciso alterar os valores dos campos `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)). O download do `Tibia Client 12x` pode ser feito através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
 
-As contas listadas abaixo são criadas na inicialização do MySQL.
+As contas listadas abaixo são criadas na inicialização do banco de dados(MySQL).
 | email 	| password 	| chars                                                      	|
 |-------	|----------	|------------------------------------------------------------	|
 | @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
@@ -35,10 +35,10 @@ As contas listadas abaixo são criadas na inicialização do MySQL.
 ### Arquivos do repositório
 No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php.
 
-Parâmetros para iniciar o script `start.sh`.
+Parâmetros disponiveis para iniciar o script `start.sh`:
 | parâmetro			| descrição																								|
 |-------------------|-------------------------------------------------------------------------------------------------------|
-| -s ou --schema 	| Realiza uma cópia do `server/schema.sql` para `sql/00_schema.sql`. O arquivo `00_schema.sql` no diretório `/sql` é o schema do banco de dados criado na inicialização do container MySQL. Se você tem um schema personalizado basta coloca-lo na pasta `sql` com o nome `00_schema.sql` e não usar a flag -s ou --schema. |
+| -s ou --schema 	| Realiza uma cópia do `server/schema.sql` para `sql/00_schema.sql`. O arquivo `00_schema.sql` no diretório `/sql` é o schema que será criado automáticamente na inicialização do container MySQL. Se você tem um schema personalizado basta coloca-lo na pasta `sql` com o nome `00_schema.sql` e não usar a flag -s ou --schema. |
 | -d ou --download	| Realiza o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `/server`. Se os arquivos do servidor não forem encontrados e você não fornecer a flag -d ou --download o script será interrompido.	|
 
 
@@ -52,25 +52,28 @@ O servidor web não tem interface gráfica, só é possível criar contas e pers
 
 O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
 
-`docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${SERVER_NAME}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
+O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
 
-### Alterando tibia client
-Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta  `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe` e em abrir com notepad++.
+### Alterando URL de autenticação no Tibia Client
+Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
 
-Localize as palavras `loginWebService` e `clientWebService` no arquivo aberto com o notepad++. O valor destes campos deve ser igual a URL do webserver, isto é, `http://127.0.0.1:8080/login.php` exposta no container `php:8.0-apache`.
-
-Supondo que as URLs originais(`loginWebService`, `clientWebService`) possuem *dez caracteres* e será substituida por uma URL de *quinze caracteres*, precisamos remover *cinco espaços em branco* após o termino da nova URL.
-
-- NOVA_URL maior_que URL_ORIGINAL -> remova espaços ao final da url
-- NOVA_URL menor_que URL_ORIGINAL -> adicione espaços ao final da url
+O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL do webserver, ou seja, `http://127.0.0.1:8080/login.php` exposta pelo container `php:8.0-apache`.
 
 As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
 ``` txt
 loginWebService=http://127.0.0.1:8080/login.php                       
 clientWebService=http://127.0.0.1:8080/login.php                         
 ```
-- [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
-- [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
+
+Supondo que as URLs originais(`loginWebService`, `clientWebService`) possuem *dez caracteres* e serão substituidas por uma nova URL de *quinze caracteres*, precisamos remover *cinco espaços em branco* após o termino da nova URL.
+
+- **Se** NOVA_URL **>** URL_ORIGINAL **então** remova espaços ao final da URL para equilibrar o tamanho inicial do campo
+- **Se** NOVA_URL **<** URL_ORIGINAL **então** adicione espaços ao final da URL para equilibrar o tamanho inicial do campo
+
+
+[Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
+
+[Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
 
 ## Opcional - Gesior2012 ou myAAC
 Os AACs(Automatic Account Creator) citados são sites criados com aparencia e funcionalidades parecidas com as encontradas no site oficial do tibia.
