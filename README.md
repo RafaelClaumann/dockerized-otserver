@@ -44,7 +44,11 @@ Parâmetros para iniciar o script `start.sh`.
 
 O script `destroy.sh` é usado para limpar o ambiente, você pode usa-lo para encerrar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os containers são encerrados e seus dados são perdidos.
 
-O `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php), o objetivo desta simplificação é facilitar a autenticação no servidor e banco de dados sem precisar instalar ou configurar um AAC(_Gesior2012 ou MyAAC_). A autenticação nos otservers 12x acontece através requisições HTTP nas URLs dos campos `loginWebService` e `clientWebService` do próprio client, por isso é preciso expor um servidor web com acesso ao banco de dados que armazena as contas e personagens. O servidor não tem uma interface web, só é possível criar contas e personagens no banco de dados.
+O arquivo `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php).
+Essa simplificação facilita a autenticação no servidor/banco de dados e evita a instalação e configuração de um AAC(_Gesior2012 ou MyAAC_).
+Durante o login, o client do tibia 12x envia requisições nas URLs `loginWebService` e `clientWebService` configuradas previamente([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)).
+Essas URLs levam até o arquivo `login.php` do servidor web(php+apache) que se comunicará com o banco de dados(MySQL) para realizar a autenticação do usuário.
+O servidor web não tem interface gráfica, só é possível criar contas e personagens no banco de dados usando comandos SQL.
 
 O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
 
