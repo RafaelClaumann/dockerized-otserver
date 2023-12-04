@@ -38,8 +38,8 @@ No script `start.sh` são definidas as credenciais do banco de dados e as config
 Parâmetros para iniciar o script `start.sh`.
 | parâmetro			| descrição																								|
 |-------------------|-------------------------------------------------------------------------------------------------------|
-| -s ou --schema 	| copia o `server/schema.sql` para `sql/00_schema.sql`									 	|
-| -d ou --download	| faz o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta server/	|
+| -s ou --schema 	| Realiza uma cópia do `server/schema.sql` para `sql/00_schema.sql`. O arquivo `00_schema.sql` no diretório `/sql` é o schema do banco de dados criado na inicialização do container MySQL. Se você tem um schema personalizado basta coloca-lo na pasta `sql` com o nome `00_schema.sql` e não usar a flag -s ou --schema. |
+| -d ou --download	| Realiza o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta server/	|
 
 
 O script `destroy.sh` é usado para limpar o ambiente, você pode usa-lo para encerrar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os containers são encerrados e seus dados são perdidos.
