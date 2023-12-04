@@ -14,10 +14,11 @@ Quatro containers são utilizados e cada um deles poussui uma responsabilidade e
 - docker-compose
 - unzip
 - wget
-- client tibia 12x 
+- notepad++
+- client tibia 12x
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04)
 
-### Indo ao que interessa
+## Indo ao que interessa
 Para iniciar o servidor basta executar o script `start.sh`.
 
 O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
@@ -54,7 +55,7 @@ O schema do banco de dados e algumas contas são criados de forma automática na
 
 O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
 
-### Alterando URL de autenticação no Tibia Client
+## Alterando URL de autenticação no Tibia Client
 Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
 
 O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL do webserver, ou seja, `http://127.0.0.1:8080/login.php` exposta pelo container `php:8.0-apache`.
