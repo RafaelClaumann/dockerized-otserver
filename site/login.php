@@ -12,7 +12,7 @@ $mysqli = mysqli_connect($databaseURL, $databaseUser, $databaseUserPassword, $da
 $request = json_decode(file_get_contents('php://input'));
 file_put_contents('00_resquest_body.json', json_encode($request));
 
-$current_password = sha1($request->password);
+$currentPassword = sha1($request->password);
 $characters = [];
 
 // busca a conta, valida o email e password
@@ -23,7 +23,7 @@ file_put_contents('01_account.json', json_encode($account));
 
 // verifica se o password recuperado do banco de dados é 
 // igual ao password fornecido no request body
-if (strcmp($account->password, $current_password) != 0) {
+if (strcmp($account->password, $currentPassword) != 0) {
 	sendError(($request->email != false ? 'Email' : 'Account name') . ' or password is not correct.');
 }
 
