@@ -31,7 +31,7 @@ O script `destroy.sh` é usado para limpar o ambiente, você pode usa-lo para en
 O arquivo `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php).
 Essa simplificação facilita a autenticação no servidor/banco de dados e evita a instalação e configuração de um AAC(_Gesior2012 ou MyAAC_).
 
-Durante o login, o client do tibia 12x envia requisições nas URLs `loginWebService` e `clientWebService` configuradas no próprio client([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)).
+Durante o login, o client do tibia 12x envia requisições nas URLs `loginWebService` e `clientWebService` configuradas no próprio client([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
 Essas URLs levam até o arquivo `login.php` do servidor web(php+apache) que se comunicará com o banco de dados(MySQL) para realizar a autenticação do usuário
 
 O servidor web não tem interface gráfica, só é possível criar contas e personagens no banco de dados usando comandos SQL.
@@ -45,7 +45,7 @@ Para iniciar o servidor basta executar o script `start.sh` fornecendo o parâmet
 
 O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
 
-O servidor pode ser acessado usando o `Tibia Client 12x`, porém é preciso alterar os valores dos campos `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)). O download do `Tibia Client 12x` pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
+O servidor pode ser acessado usando o `Tibia Client 12x`, porém é preciso alterar os valores dos campos `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)). O download do `Tibia Client 12x` pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
 
 As contas listadas abaixo são criadas na inicialização do banco de dados(MySQL).
 | email 	| password 	| chars                                                      	|
