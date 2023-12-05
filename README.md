@@ -1,29 +1,51 @@
 # Dockerized Tibia OTserver
 
-### O que tem nesse repositório?
+## O que tem nesse repositório?
 Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP para iniciar um ambiente docker e executar um OTserver(_open tibia server_).
 
-Quatro containers são utilizados e cada um deles poussui uma responsabilidade específica:
+Quatro containers são utilizados:
 - OTserver(_open tibia server_)
-- banco de dados(_mysql_)
-- gerenciador de banco de dados(_phpmyadmin_)
-- servidor web para login(_php+apache_)
+- Banco de dados(_mysql_)
+- Gerenciador de banco de dados(_phpmyadmin_)
+- Servidor web(_php+apache_)
 
-### Requisitos
+## Requisitos
 - docker
-- docker-compose
+- docker compose
 - unzip
 - wget
 - notepad++
-- client tibia 12x
+- client tibia 12x([Canary - Version 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0))
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04)
 
+### Arquivos do repositório
+No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php.
+
+Parâmetros disponiveis para iniciar o script `start.sh`:
+| parâmetro			| descrição																								|
+|-------------------|-------------------------------------------------------------------------------------------------------|
+| -d ou --download	| Realiza o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `/server`. Se os arquivos do servidor não forem encontrados e você não fornecer o parâmetro -d ou --download o script não funcionará.	|
+
+O script `destroy.sh` é usado para limpar o ambiente, você pode usa-lo para encerrar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os containers são encerrados e seus dados são perdidos.
+
+O arquivo `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php).
+Essa simplificação facilita a autenticação no servidor/banco de dados e evita a instalação e configuração de um AAC(_Gesior2012 ou MyAAC_).
+
+Durante o login, o client do tibia 12x envia requisições nas URLs `loginWebService` e `clientWebService` configuradas no próprio client([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)).
+Essas URLs levam até o arquivo `login.php` do servidor web(php+apache) que se comunicará com o banco de dados(MySQL) para realizar a autenticação do usuário
+
+O servidor web não tem interface gráfica, só é possível criar contas e personagens no banco de dados usando comandos SQL.
+
+O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
+
+O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
+
 ## Indo ao que interessa
-Para iniciar o servidor basta executar o script `start.sh`.
+Para iniciar o servidor basta executar o script `start.sh` fornecendo o parâmetro `-d` ou `--download`.
 
 O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
 
-O servidor pode ser acessado usando o `Tibia Client 12x`, porém é preciso alterar os valores dos campos `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)). O download do `Tibia Client 12x` pode ser feito através das [tags](https://github.com/opentibiabr/canary/tags) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
+O servidor pode ser acessado usando o `Tibia Client 12x`, porém é preciso alterar os valores dos campos `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)). O download do `Tibia Client 12x` pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
 
 As contas listadas abaixo são criadas na inicialização do banco de dados(MySQL).
 | email 	| password 	| chars                                                      	|
@@ -33,30 +55,8 @@ As contas listadas abaixo são criadas na inicialização do banco de dados(MySQ
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
-### Arquivos do repositório
-No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php.
-
-Parâmetros disponiveis para iniciar o script `start.sh`:
-| parâmetro			| descrição																								|
-|-------------------|-------------------------------------------------------------------------------------------------------|
-| -s ou --schema 	| Realiza uma cópia do `server/schema.sql` para `sql/00_schema.sql`. O arquivo `00_schema.sql` no diretório `/sql` é o schema que será criado automáticamente na inicialização do container MySQL. Se você tem um schema personalizado basta coloca-lo na pasta `sql` com o nome `00_schema.sql` e não usar a flag -s ou --schema. |
-| -d ou --download	| Realiza o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `/server`. Se os arquivos do servidor não forem encontrados e você não fornecer a flag -d ou --download o script será interrompido.	|
-
-
-O script `destroy.sh` é usado para limpar o ambiente, você pode usa-lo para encerrar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os containers são encerrados e seus dados são perdidos.
-
-O arquivo `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php).
-Essa simplificação facilita a autenticação no servidor/banco de dados e evita a instalação e configuração de um AAC(_Gesior2012 ou MyAAC_).
-Durante o login, o client do tibia 12x envia requisições nas URLs `loginWebService` e `clientWebService` configuradas previamente([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-tibia-client)).
-Essas URLs levam até o arquivo `login.php` do servidor web(php+apache) que se comunicará com o banco de dados(MySQL) para realizar a autenticação do usuário.
-O servidor web não tem interface gráfica, só é possível criar contas e personagens no banco de dados usando comandos SQL.
-
-O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
-
-O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
-
 ## Alterando URL de autenticação no Tibia Client
-Supondo que o [download](https://github.com/opentibiabr/canary/tags) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
+Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
 
 O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL do webserver, ou seja, `http://127.0.0.1:8080/login.php` exposta pelo container `php:8.0-apache`.
 
