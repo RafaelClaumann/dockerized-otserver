@@ -1,11 +1,11 @@
 server/*
 !README.md
 
-site/00_resquestBody.json
+site/00_resquest_body.json
 site/01_account.json
 site/02_characters.json
 site/03_session_key.json
-site/04_responseBody.json
+site/04_response_body.json
 
 .ngrok_token
 

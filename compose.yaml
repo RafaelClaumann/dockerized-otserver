@@ -51,7 +51,7 @@ services:
       PMA_PORT: 3306
       MYSQL_USER: ${DATABASE_USER}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-      MYSQL_ROOT_PASSWORD: noob      
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}      
     networks:
       - otserver
     ports:
@@ -64,8 +64,11 @@ services:
       mysql-svc:
         condition: service_started
     environment:
-      DOCKER_NETWORK_GATEWAY: ${DOCKER_NETWORK_GATEWAY}
-      OT_SERVER_NAME: ${SERVER_NAME}
+      DOCKER_NETWORK_GATEWAY_ENV: ${DOCKER_NETWORK_GATEWAY}
+      SERVER_NAME_ENV: ${SERVER_NAME}
+      DATABASE_NAME_ENV: ${DATABASE_NAME}
+      DATABASE_USER_ENV: ${DATABASE_USER}
+      DATABASE_PASSWORD_ENV: ${DATABASE_PASSWORD}
     networks:
       - otserver
     ports:

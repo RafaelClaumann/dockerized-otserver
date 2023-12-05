@@ -2,10 +2,10 @@
 
 // as informações do banco de dados são
 // preenchidas automaticamente quando o `start.sh` é iniciado
-$databaseURL = getenv("DOCKER_NETWORK_GATEWAY");
-$databaseUser = getenv("DATABASE_USER");
-$databaseUserPassword = getenv("DATABASE_PASSWORD");
-$databaseName = getenv("DATABASE_NAME");
+$databaseURL = getenv("DOCKER_NETWORK_GATEWAY_ENV");
+$databaseName = getenv("DATABASE_NAME_ENV");
+$databaseUser = getenv("DATABASE_USER_ENV");
+$databaseUserPassword = getenv("DATABASE_PASSWORD_ENV");
 $mysqli = mysqli_connect($databaseURL, $databaseUser, $databaseUserPassword, $databaseName);
 
 // salva o request body recebido em 00_request_body.json
@@ -54,12 +54,12 @@ if($query) {
 // configurações do servidor, os valores são obtidos das variáveis de ambiente declaradas no start.sh
 $worlds = [[
 	'id' => 0,
-	'name' => getenv("OT_SERVER_NAME"),
-	'externaladdress' => getenv("DOCKER_NETWORK_GATEWAY"),
+	'name' => getenv("SERVER_NAME_ENV"),
+	'externaladdress' => getenv("DOCKER_NETWORK_GATEWAY_ENV"),
 	'externalport' => 7172,
-	'externaladdressprotected' => getenv("DOCKER_NETWORK_GATEWAY"),
+	'externaladdressprotected' => getenv("DOCKER_NETWORK_GATEWAY_ENV"),
 	'externalportprotected' => 7172,
-	'externaladdressunprotected' => getenv("DOCKER_NETWORK_GATEWAY"),
+	'externaladdressunprotected' => getenv("DOCKER_NETWORK_GATEWAY_ENV"),
 	'externalportunprotected' => 7172,
 	'previewstate' => 0,
 	'location' => 'BRA',
