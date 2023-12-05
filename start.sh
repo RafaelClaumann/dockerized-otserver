@@ -1,4 +1,11 @@
 #!/bin/bash
+
+#
+# sh start.sh
+# sh start.sh -d
+# sh start.sh --download
+#
+
 export SERVER_NAME=OTServBR
 
 export DATABASE_NAME=otservdb
@@ -24,7 +31,6 @@ if [[ "$1" == "-d" ]] || [[ "$1" == "--download" ]]; then
     fi
 
     # descompacta os arquivos do servidor na pasta 'server/'
-    # renomeia o arquivo 'server/config.lua.dist' para 'server/config.lua'
     # copia o 'server/schema.sql' para 'sql/00_schema.sql'
     # altera as permissões do arquivo 'server/canary' para que seja possível executa-lo
     unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip &> /dev/null
@@ -53,9 +59,8 @@ then
    exit 1
 fi
 
-#################################
-#### iniciando os containers ####
-#################################
+
+# iniciando os containers
 docker-compose up -d
 
 # instalando extensão no container php
@@ -69,13 +74,6 @@ fi;
 
 # exibindo status dos containers
 echo
-echo "[INFO] is php        running? $(docker inspect -f {{.State.Running}} php)"
-echo "[INFO] is mysql      running? $(docker inspect -f {{.State.Running}} mysql)"
-echo "[INFO] is server     running? $(docker inspect -f {{.State.Running}} server)"
-echo "[INFO] is phpmyadmin running? $(docker inspect -f {{.State.Running}} phpmyadmin)"
-
-echo
-
 echo "[INFO] phpMyAdmin address                ->  http://localhost:9090/"
 echo "[INFO] php login server address          ->  http://localhost:8080/login.php"
 echo "[INFO] server name                       ->  $SERVER_NAME"
