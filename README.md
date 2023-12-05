@@ -57,7 +57,7 @@ O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, ph
 ## Alterando URL de autenticação no Tibia Client
 Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
 
-O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL do webserver, ou seja, `http://127.0.0.1:8080/login.php` exposta pelo container `php:8.0-apache`.
+O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL de autenticação exposta no webserver, ou seja, `http://127.0.0.1:8080/login.php` exposta pelo container `php:8.0-apache`.
 
 As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
 ``` txt
