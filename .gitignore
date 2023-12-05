@@ -1,4 +1,5 @@
 server/*
+!config.lua
 !README.md
 
 site/00_resquest_body.json

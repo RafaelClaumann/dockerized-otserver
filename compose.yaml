@@ -32,6 +32,12 @@ services:
         apt install libgomp1 && \
         ./canary
       "
+    environment:
+      DOCKER_NETWORK_GATEWAY_ENV: ${DOCKER_NETWORK_GATEWAY}
+      SERVER_NAME_ENV: ${SERVER_NAME}
+      DATABASE_NAME_ENV: ${DATABASE_NAME}
+      DATABASE_USER_ENV: ${DATABASE_USER}
+      DATABASE_PASSWORD_ENV: ${DATABASE_PASSWORD}      
     networks:
       - otserver
     ports:

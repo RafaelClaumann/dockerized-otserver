@@ -28,7 +28,6 @@ if [[ "$1" == "-d" ]] || [[ "$1" == "--download" ]]; then
     # copia o 'server/schema.sql' para 'sql/00_schema.sql'
     # altera as permissões do arquivo 'server/canary' para que seja possível executa-lo
     unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip &> /dev/null
-    mv server/config.lua.dist server/config.lua
     cp server/schema.sql sql/00_schema.sql 
     chmod +x server/canary
 
@@ -58,14 +57,6 @@ fi
 #### iniciando os containers ####
 #################################
 docker-compose up -d
-
-# substituindo valores no arquivo config.lua
-sed -i "s/^serverName\s=\s.*\"$/serverName = \"$SERVER_NAME\"/g" server/config.lua
-sed -i "s/^mysqlHost\s=\s.*\"$/mysqlHost = \"$DOCKER_NETWORK_GATEWAY\"/g" server/config.lua
-sed -i "s/^mysqlUser\s=\s.*\"$/mysqlUser = \"$DATABASE_USER\"/g" server/config.lua
-sed -i "s/^mysqlPass\s=\s.*\"$/mysqlPass = \"$DATABASE_PASSWORD\"/g" server/config.lua
-sed -i "s/^mysqlDatabase\s=\s.*\"$/mysqlDatabase = \"$DATABASE_NAME\"/g" server/config.lua
-sed -i "s/^ip\s=\s.*\"$/ip = \"$DOCKER_NETWORK_GATEWAY\"/g" server/config.lua
 
 # instalando extensão no container php
 if [ "$(docker exec php bash -c "php -m | grep mysqli")" = "" ]; then
