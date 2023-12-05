@@ -6,7 +6,7 @@ $databaseURL = "192.168.128.1";
 $databaseUser = "otserv";
 $databaseUserPassword = "noob";
 $databaseName = "otservdb";
-$mysqli = mysqli_connect($databaseURL,$databaseUser, $databaseUserPassword, $databaseName);
+$mysqli = mysqli_connect($databaseURL, $databaseUser, $databaseUserPassword, $databaseName);
 
 $request = json_decode(file_get_contents('php://input'));
 file_put_contents('00_resquestBody.json', json_encode($request));
