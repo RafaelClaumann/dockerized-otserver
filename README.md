@@ -18,6 +18,20 @@ Quatro containers são utilizados:
 - client tibia 12x([Canary - Version 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0))
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04)
 
+## Inico rápido
+- Para iniciar o servidor e realizar o download dos arquivos necessários execute o script `start.sh` fornecendo o parâmetro `-d` ou `--download`. Se você já fez o download dos arquivos, ou seja, já usou o parâmetro `-d` ou `--download`, basta executar o `start.sh` sem nenhum parâmetro.
+- O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
+- O endpoint de autenticação é exposto pelo container `php+apache` em http://localhost:8080/login.php.
+- Utilize um Tibia Client 12x para acessar o servidor. O download pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). No próprio Tibia Client 12x será preciso alterar os valores das chaves `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
+
+As contas listadas abaixo são criadas automaticamente durante a inicialização do banco de dados(MySQL).
+| email 	| password 	| chars                                                      	|
+|-------	|----------	|------------------------------------------------------------	|
+| @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
+| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 			|
+| @b    	| 1        	| ADM1                                                       	|
+| @c    	| 1        	| ADM2                                                       	|
+
 ## Arquivos do repositório
 No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php.
 
@@ -39,21 +53,6 @@ O servidor web não tem interface gráfica, só é possível criar contas e pers
 O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
 
 O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
-
-## Indo ao que interessa
-Para iniciar o servidor e os containers auxiliares basta executar o script `start.sh` fornecendo o parâmetro `-d` ou `--download`.
-
-O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
-
-O servidor pode ser acessado usando o `Tibia Client 12x`, porém é preciso alterar os valores dos campos `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)). O download do `Tibia Client 12x` pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary).
-
-As contas listadas abaixo são criadas na inicialização do banco de dados(MySQL).
-| email 	| password 	| chars                                                      	|
-|-------	|----------	|------------------------------------------------------------	|
-| @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
-| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 			|
-| @b    	| 1        	| ADM1                                                       	|
-| @c    	| 1        	| ADM2                                                       	|
 
 ## Alterando URL de autenticação no Tibia Client
 Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
