@@ -1,29 +1,33 @@
 <?php
 
-// as informações do banco de dados são preenchidas automaticamente
-// quando o script `start.sh` é iniciado
-$databaseURL = "192.168.128.1";
-$databaseUser = "otserv";
-$databaseUserPassword = "noob";
-$databaseName = "otservdb";
+// as informações do banco de dados são
+// preenchidas automaticamente quando o `start.sh` é iniciado
+$databaseURL = getenv("DOCKER_NETWORK_GATEWAY");
+$databaseUser = getenv("DATABASE_USER");
+$databaseUserPassword = getenv("DATABASE_PASSWORD");
+$databaseName = getenv("DATABASE_NAME");
 $mysqli = mysqli_connect($databaseURL, $databaseUser, $databaseUserPassword, $databaseName);
 
+// salva o request body recebido em 00_request_body.json
 $request = json_decode(file_get_contents('php://input'));
-file_put_contents('00_resquestBody.json', json_encode($request));
+file_put_contents('00_resquest_body.json', json_encode($request));
 
 $current_password = sha1($request->password);
 $characters = [];
 
-// buscar conta, validar email e password
+// busca a conta, valida o email e password
+// salva as informações da conta no arquivo 01_account.json
 $query = $mysqli->query("SELECT * FROM accounts WHERE email = '$request->email'");
 $account = $query->fetch_object();
 file_put_contents('01_account.json', json_encode($account));
 
+// verifica se o password recuperado do banco de dados é 
+// igual ao password fornecido no request body
 if (strcmp($account->password, $current_password) != 0) {
 	sendError(($request->email != false ? 'Email' : 'Account name') . ' or password is not correct.');
 }
 
-// buscar characters da conta e definir o main char
+// busca os personagens da conta e define o personagem principal
 $columns = 'id, name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons';
 $query = $mysqli->query("SELECT {$columns} FROM players WHERE account_id =  '$account->id' AND deletion = 0");
 if($query) {
@@ -38,12 +42,16 @@ if($query) {
 		}
 	}
 
+	// cria a lista de personagens usando inforamações recuperadas do banco de dados
 	foreach ($players as $player) {
 		$characters[] = create_char($player, $highestLevelId);
 	}
+
+	// salva a lista de personagens no arquivo 02_characters.json
 	file_put_contents('02_characters.json', json_encode($characters));
 }
 
+// configurações do servidor, os valores são obtidos das variáveis de ambiente declaradas no start.sh
 $worlds = [[
 	'id' => 0,
 	'name' => getenv("OT_SERVER_NAME"),
@@ -76,11 +84,15 @@ $session = [
 	'tournamentticketpurchasestate' => 0,
 	'emailcoderequest' => false
 ];
+
+// as informações de login são salvas no arquivo 03_session_key.json
 file_put_contents('03_session_key.json', json_encode($session));
 
 $playdata = compact('worlds', 'characters');
 $responseBody = compact('session', 'playdata');
-file_put_contents('04_responseBody.json', json_encode($responseBody));
+
+// a resposta do webserver é salva no arquivo 04_response_body.json
+file_put_contents('04_response_body.json', json_encode($responseBody));
 die(json_encode($responseBody));
 
 function create_char($player, $highestLevelId) {
