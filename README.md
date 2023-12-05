@@ -41,7 +41,7 @@ O schema do banco de dados e algumas contas são criados de forma automática na
 O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
 
 ## Indo ao que interessa
-Para iniciar o servidor basta executar o script `start.sh` fornecendo o parâmetro `-d` ou `--download`.
+Para iniciar o servidor e os containers auxiliares basta executar o script `start.sh` fornecendo o parâmetro `-d` ou `--download`.
 
 O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
 
