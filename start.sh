@@ -46,12 +46,21 @@ do
         fi
 
         # descompacta os arquivos do servidor na pasta 'server/'
-        # remove o arquivo zip
+        # renomeia o arquivo 'config.lua.dist' para 'config.lua'        
         # altera as permissões do arquivo 'canary' para que seja possível executa-lo
         unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip &> /dev/null
-        rm -r server/canary-v2.6.1-ubuntu-22.04-executable+server.zip
+        mv server/config.lua.dist server/config.lua        
         chmod +x server/canary
-        echo "[INFO] download concluído e extraído em 'otserver/server/'!"
+
+        # remove uma serie de arquivos desnecessarios
+        rm -r server/.github server/cmake server/data-canary server/docker \
+            server/docs server/src server/tests server/.editorconfig server/.gitignore \
+            server/.reviewdog.yml server/.yamllint.yaml server/canary.rc server/CMakeLists.txt \
+            server/CMakePresets.json server/CODE_OF_CONDUCT.md server/gdb_debug server/GitVersion.yml \
+            server/JenkinsFile server/package.json server/recompile.sh server/sonar-project.properties \
+            server/start_gdb.sh server/start.sh server/vcpkg.json
+
+        echo "[INFO] download concluído, arquivos do servidor extraídos em 'otserver/server/'!"
         download=true
     fi
 
