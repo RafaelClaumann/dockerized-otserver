@@ -18,7 +18,7 @@ Quatro containers são utilizados:
 - client tibia 12x([Canary - Version 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0))
 - dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04)
 
-### Arquivos do repositório
+## Arquivos do repositório
 No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php.
 
 Parâmetros disponiveis para iniciar o script `start.sh`:
