@@ -44,7 +44,7 @@ As URLs configuradas no Tibia Client 12x levam até o arquivo `login.php` do ser
 O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
 
 As contas listadas abaixo são criadas automaticamente durante a inicialização do banco de dados(MySQL).
-| email 	| password 	| chars                                                      	|
+| email 	| password 	| personagens                                                      	|
 |-------	|----------	|------------------------------------------------------------	|
 | @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 			|
 | @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 		|
