@@ -60,14 +60,6 @@ Navegue até a pasta `bin` do Tibia Client, clique com o botão direito do mouse
 
 O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL de autenticação exposta no container webserver(php+apache), ou seja, `http://127.0.0.1:8080/login.php`.
 
-As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
-``` txt
-loginWebService=http://127.0.0.1/login.php                            
-clientWebService=http://127.0.0.1/login.php                              
-```
-
-Supondo que as URLs originais(`loginWebService`, `clientWebService`) possuem *dez caracteres* e serão substituidas por uma nova URL de *quinze caracteres*, precisamos remover *cinco espaços em branco* após o termino da nova URL.
-
 - **Se** NOVA_URL **>** URL_ORIGINAL **então** remova espaços ao final da URL para equilibrar o tamanho inicial do campo
 - **Se** NOVA_URL **<** URL_ORIGINAL **então** adicione espaços ao final da URL para equilibrar o tamanho inicial do campo
 
