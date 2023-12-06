@@ -51,7 +51,7 @@ As contas listadas abaixo são criadas na inicialização do banco de dados(MySQ
 | @b    	| 1        	| ADM1                                                       	|
 | @c    	| 1        	| ADM2                                                       	|
 
-O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
+O `docker-compose.yaml` contém a declaração dos containers(otserver, mysql, phpmyadmin, php+apache) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
 
 ## Alterando URL de autenticação no Tibia Client
 Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
