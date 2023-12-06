@@ -65,12 +65,14 @@ O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL
 
 Antes:
 
-![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/cec14f31-6dbe-4f7f-8128-c1a6e5169a51)
+![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/9977f18e-b539-4ad2-a377-1378c32baa05)
+
 
 
 Depois:
 
-![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/94efc6ad-e3fa-4a9a-9f42-79f1df927eeb)
+![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/f0f4a35c-b146-45e7-8050-963399f7de5f)
+
 
 
 [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
