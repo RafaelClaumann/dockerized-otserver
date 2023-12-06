@@ -54,9 +54,11 @@ As contas listadas abaixo são criadas na inicialização do banco de dados(MySQ
 O `docker-compose.yaml` contém a declaração dos containers(otserver, mysql, phpmyadmin, php+apache) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
 
 ## Alterando URL de autenticação no Tibia Client
-Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do client ja tenha sido realizando e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado, navegue até a pasta `/bin` do client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
+Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do Tibia Client 12x ja tenha sido realizado e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado.
 
-O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL de autenticação exposta no webserver, ou seja, `http://127.0.0.1:8080/login.php` exposta pelo container `php:8.0-apache`.
+Navegue até a pasta `bin` do Tibia Client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
+
+O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL de autenticação exposta no container webserver(php+apache), ou seja, `http://127.0.0.1:8080/login.php`.
 
 As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
 ``` txt
@@ -68,6 +70,15 @@ Supondo que as URLs originais(`loginWebService`, `clientWebService`) possuem *de
 
 - **Se** NOVA_URL **>** URL_ORIGINAL **então** remova espaços ao final da URL para equilibrar o tamanho inicial do campo
 - **Se** NOVA_URL **<** URL_ORIGINAL **então** adicione espaços ao final da URL para equilibrar o tamanho inicial do campo
+
+Antes:
+
+![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/270ad0cf-59f8-4ac5-9888-b36c32a2d382)
+
+
+Depois:
+
+![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/f54f7904-5761-4f0f-8db6-8d213c8efc29)
 
 
 [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
