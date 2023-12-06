@@ -62,8 +62,8 @@ O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL
 
 As linhas no **quadro abaixo** são um exemplo do que pode ser encontrado ao abrir o client com o notepad++. Selecionado as linhas é possível ver que existe uma série de espaços em branco após o término da URL, a quantidade de espaços varia de acordo com o tamanho da URL.
 ``` txt
-loginWebService=http://127.0.0.1:8080/login.php                       
-clientWebService=http://127.0.0.1:8080/login.php                         
+loginWebService=http://127.0.0.1/login.php                            
+clientWebService=http://127.0.0.1/login.php                              
 ```
 
 Supondo que as URLs originais(`loginWebService`, `clientWebService`) possuem *dez caracteres* e serão substituidas por uma nova URL de *quinze caracteres*, precisamos remover *cinco espaços em branco* após o termino da nova URL.
