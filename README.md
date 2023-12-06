@@ -23,15 +23,8 @@ Quatro containers são utilizados:
 - O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `root`/`noob` ou `otserv`/`noob`.
 - O endpoint de autenticação é exposto pelo container `php+apache` em http://localhost:8080/login.php.
 - Utilize um Tibia Client 12x para acessar o servidor. O download pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). No próprio Tibia Client 12x será preciso alterar os valores das chaves `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
+- Para fazer login no Tibia Client 12x use as seguintes credenciais: `@god`/`god` ou `@a`/`1`.
 - Para encerrar os containers do servidor basta executar o comando `docker-compose down`.
-
-As contas listadas abaixo são criadas automaticamente durante a inicialização do banco de dados(MySQL).
-| email 	| password 	| chars                                                      	|
-|-------	|----------	|------------------------------------------------------------	|
-| @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 					|
-| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 			|
-| @b    	| 1        	| ADM1                                                       	|
-| @c    	| 1        	| ADM2                                                       	|
 
 ## Arquivos do repositório
 No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers(otserver, mysql, phpmyadmin, php+apache) com o comando `docker-compose up -d`.
@@ -49,6 +42,14 @@ Durante o login, o Tibia Client 12x realiza requisições nas URLs `loginWebServ
 As URLs configuradas no Tibia Client 12x levam até o arquivo `login.php` do servidor web(php+apache) que por sua vez se comunicará com o banco de dados(MySQL) para autenticar o cliente. O servidor web não tem interface gráfica, só é possível criar contas e personagens no banco de dados usando comandos SQL.
 
 O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
+
+As contas listadas abaixo são criadas automaticamente durante a inicialização do banco de dados(MySQL).
+| email 	| password 	| chars                                                      	|
+|-------	|----------	|------------------------------------------------------------	|
+| @god    	| god       | GOD, paladin/sorcerer/druid/knight sample 			|
+| @a    	| 1        	| Paladin(800) Sorcerer(800) Druid(800) Knight(800) 		|
+| @b    	| 1        	| ADM1                                                       	|
+| @c    	| 1        	| ADM2                                                       	|
 
 O `docker-compose.yaml` contém a declaração dos containers(_ubuntu, mysql, phpmyadmin e php-apache_) que são iniciados quando o script `start.sh` é executado. Os campos no formato `${xxxx}` em `docker-compose.yaml` recebem os valores das variaveis exportadas no script `start.sh`.
 
