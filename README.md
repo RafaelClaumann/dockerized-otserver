@@ -24,7 +24,7 @@ Quatro containers são utilizados:
 - O endpoint de autenticação é exposto pelo container `php+apache` em http://localhost:8080/login.php.
 - Utilize um Tibia Client 12x para acessar o servidor. O download pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). No próprio Tibia Client 12x será preciso alterar os valores das chaves `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
 - Para fazer login no Tibia Client 12x use as seguintes credenciais: `@god`/`god` ou `@a`/`1`.
-- Para encerrar os containers do servidor basta executar o comando `docker-compose down`.
+- Para encerrar os containers(otserver, mysql, phpmyadmin, php+apache) execute o comando `docker-compose down`.
 
 ## Arquivos do repositório
 No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers(otserver, mysql, phpmyadmin, php+apache) com o comando `docker-compose up -d`.
