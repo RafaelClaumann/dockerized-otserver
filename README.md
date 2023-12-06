@@ -73,8 +73,6 @@ Depois:
 ![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/94efc6ad-e3fa-4a9a-9f42-79f1df927eeb)
 
 
-
-
 [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
 
 [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
@@ -126,7 +124,6 @@ echo $DOCKER_NETWORK_GATEWAY > site/install.txt
 - [Cliente Tibia 12 com Notepad++](https://forums.otserv.com.br/index.php?/forums/topic/169530-cliente-tibia-12-com-notepad/&tab=comments#comment-1255507)
 - [Otserv Brasil: Tutoriais Infraestrutura](https://forums.otserv.com.br/index.php?/forums/forum/445-infraestrutura/)
 
----
 # Outras Informações
 
 ## Listando as redes do docker
