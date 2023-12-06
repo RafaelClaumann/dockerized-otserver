@@ -20,7 +20,7 @@ Quatro containers são utilizados:
 
 ## Inico rápido
 - Para iniciar os containers(otserver, mysql, phpmyadmin, php+apache) e realizar o download dos arquivos do servidor execute o script `start.sh` fornecendo o parâmetro `-d` ou `--download`. Se você já fez o download dos arquivos basta executar o `start.sh` sem nenhum parâmetro.
-- O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `otserv`/`noob`.
+- O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `root`/`noob` ou `otserv`/`noob`.
 - O endpoint de autenticação é exposto pelo container `php+apache` em http://localhost:8080/login.php.
 - Utilize um Tibia Client 12x para acessar o servidor. O download pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). No próprio Tibia Client 12x será preciso alterar os valores das chaves `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
 - Para encerrar os containers do servidor basta executar o comando `docker-compose down`.
