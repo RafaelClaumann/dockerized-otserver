@@ -63,16 +63,11 @@ O valor atribuído a `loginWebService` e `clientWebService` deve ser igual a URL
 - **Se** NOVA_URL **>** URL_ORIGINAL **então** remova espaços ao final da URL para equilibrar o tamanho inicial do campo
 - **Se** NOVA_URL **<** URL_ORIGINAL **então** adicione espaços ao final da URL para equilibrar o tamanho inicial do campo
 
-Antes:
+Antes x Depois:
 
 ![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/320c4143-a9fc-420b-9cdf-fc61f29b2503)
 
-
-
-Depois:
-
 ![image](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/a15ac925-b5ec-4b1b-9f0d-ceb1a474e9c1)
-
 
 [Tibia 11 Discussion(+Tutorial how to able to use it)](https://otland.net/threads/tibia-11-discussion-tutorial-how-to-able-to-use-it.242719/)
 
