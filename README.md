@@ -122,16 +122,7 @@ echo $DOCKER_NETWORK_GATEWAY > site/install.txt
 - [Otserv Brasil: Tutoriais Infraestrutura](https://forums.otserv.com.br/index.php?/forums/forum/445-infraestrutura/)
 
 ---
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+# Outras Informações
 
 ## Listando as redes do docker
 ``` bash
@@ -149,8 +140,6 @@ $docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open
     192.168.128.0/20
 ```
 
-<br>
-
 ## MySQL
 Em algumas situações houveram erros ao logar no PhpMyAdmin e tive que executar as seguintes consultas no banco de dados
 ``` sql
@@ -167,8 +156,6 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '<MYSQL_USER>'@'%' WITH GRANT O
 #> Make our changes take effect
 mysql -u root -e "FLUSH PRIVILEGES;"
 ```
-
-<br>
 
 ## login.php
 RequestBody
@@ -243,8 +230,6 @@ ResponseBody
 }
 ```
 
-<br>
-
 ## NGROK
 ```bash
 # https://ngrok.com/
@@ -262,5 +247,3 @@ docker container run --rm -it \
   --network ngrok_net \
   nginx
 ```
-
-<br>
