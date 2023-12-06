@@ -34,22 +34,19 @@ As contas listadas abaixo são criadas automaticamente durante a inicialização
 | @c    	| 1        	| ADM2                                                       	|
 
 ## Arquivos do repositório
-No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers, realizar alterações nos arquivos `server/config.lua`, `site/login.php` e instalar extensões no container php.
+No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers(otserver, mysql, phpmyadmin, php+apache) com o comando `docker-compose up -d`.
 
 Parâmetros disponiveis para iniciar o script `start.sh`:
 | parâmetro			| descrição																								|
 |-------------------|-------------------------------------------------------------------------------------------------------|
-| -d ou --download	| Realiza o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `/server`. Se os arquivos do servidor não forem encontrados e você não fornecer o parâmetro -d ou --download o script não funcionará.	|
-
-O script `destroy.sh` é usado para limpar o ambiente, você pode usa-lo para encerrar o servidor e limpar seus rastros antes de iniciar um novo ambiente do zero. Todos os containers são encerrados e seus dados são perdidos.
+| -d ou --download	| Realiza o download e extração do servidor [canary](https://github.com/opentibiabr/canary) na pasta `server/`. Se os arquivos do servidor não forem encontrados na pasta `server/` e você não fornecer o parâmetro -d ou --download o script não funcionará.	|
 
 O arquivo `login.php` é uma simplificação do login.php encontrado no [MyAAC](https://github.com/otsoft/myaac/blob/master/login.php).
 Essa simplificação facilita a autenticação no servidor/banco de dados e evita a instalação e configuração de um AAC(_Gesior2012 ou MyAAC_).
 
-Durante o login, o client do tibia 12x envia requisições nas URLs `loginWebService` e `clientWebService` configuradas no próprio client([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
-Essas URLs levam até o arquivo `login.php` do servidor web(php+apache) que se comunicará com o banco de dados(MySQL) para realizar a autenticação do usuário
+Durante o login, o Tibia Client 12x realiza requisições nas URLs `loginWebService` e `clientWebService` que são configuradas no próprio Tibia Client([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
 
-O servidor web não tem interface gráfica, só é possível criar contas e personagens no banco de dados usando comandos SQL.
+As URLs configuradas no Tibia Client 12x levam até o arquivo `login.php` do servidor web(php+apache) que por sua vez se comunicará com o banco de dados(MySQL) para autenticar o cliente. O servidor web não tem interface gráfica, só é possível criar contas e personagens no banco de dados usando comandos SQL.
 
 O schema do banco de dados e algumas contas são criados de forma automática na inicialização do container `MySQL`, veja os arquivos [00_schema.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/00_schema.sql) e [01_data.sql](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/sql/01_data.sql).
 
