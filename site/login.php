@@ -42,7 +42,7 @@ if($query) {
 		}
 	}
 
-	// cria a lista de personagens usando inforamações recuperadas do banco de dados
+	// cria a lista de personagens usando informações recuperadas do banco de dados
 	foreach ($players as $player) {
 		$characters[] = create_char($player, $highestLevelId);
 	}
