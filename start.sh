@@ -19,21 +19,36 @@ export DOCKER_NETWORK_CIDR=192.168.128.0/20
 if [[ "$1" == "-d" ]] || [[ "$1" == "--download" ]]; then
     printf "[INFO] iniciando download do servidor! \n"
 
-    download_url=https://github.com/opentibiabr/canary/releases/download/v2.6.1/canary-v2.6.1-ubuntu-22.04-executable+server.zip
-    wget --show-progress -P server/ $download_url
+    readonly tag=v2.6.1
+    readonly package=canary-v2.6.1-ubuntu-22.04-executable+server.zip
 
-    # se a saída do comando anterior(wget) for diferente de 0 significa que ocorreu um erro
-    # https://www.gnu.org/software/wget/manual/html_node/Exit-Status.html
-    exit_status=$?
-    if [ ! $exit_status -eq 0 ]; then
-        echo "[ERROR] erro durante o wget - $exit_status"
-        exit 1
+    # verifica se o arquivo zip do servidor está presente
+    if [ ! -f "server/$package" ]; then
+        download_url=https://github.com/opentibiabr/canary/releases/download/$tag/$package
+        wget --show-progress -P server/ $download_url
+
+        # se a saída do comando anterior(wget) for diferente de 0 significa que ocorreu um erro
+        # https://www.gnu.org/software/wget/manual/html_node/Exit-Status.html
+        exit_status=$?
+        if [ ! $exit_status -eq 0 ]; then
+            echo "[ERROR] erro durante o wget - $exit_status"
+            exit 1
+        fi
+        echo "[INFO] sucesso durante o wget!"
+
     fi
 
     # descompacta os arquivos do servidor na pasta 'server/'
+    unzip -o -d server/ server/$package &> /dev/null
+    exit_status=$?
+    if [ ! $exit_status -eq 0 ]; then
+        echo "[ERROR] erro durante o unzip - $exit_status"
+        exit 1
+    fi
+    echo "[INFO] sucesso durante o unzip!"
+
     # copia o 'server/schema.sql' para 'sql/00_schema.sql'
     # altera as permissões do arquivo 'server/canary' para que seja possível executa-lo
-    unzip -o -d server/ server/canary-v2.6.1-ubuntu-22.04-executable+server.zip &> /dev/null
     cp server/schema.sql sql/00_schema.sql 
     chmod +x server/canary
 
@@ -61,6 +76,7 @@ fi
 
 
 # iniciando os containers
+echo "[INFO] iniciando containers: MySQL, Ubuntu, PhpMyAdmin e PHP!"
 docker-compose up -d
 
 # instalando extensão no container php
