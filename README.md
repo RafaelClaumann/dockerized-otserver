@@ -20,7 +20,7 @@ Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP par
 ## Inico rápido
 - Para realizar o download dos arquivos do servidor e inicia-lo, execute o script `start.sh` com o parâmetro `-d`. As execuções subsequentes de `start.sh` não precisarão do parâmetro `-d`.
 - Gerenciamento do banco de dados através do `phpMyAdmin` em http://localhost:9090 utilizando as credenciais `root`/`noob` ou `otserv`/`noob`.
-- Utilize um Tibia Client 12x([download aqui - tag 2.0.0 opentibiabr/canary](https://github.com/opentibiabr/canary/releases/tag/v2.0.0)) para acessar o servidor. É preciso alterar o valor das chaves `loginWebService` e `clientWebService` no arquivo `127.0.0.1_client.exe`([tutorial aqui](#Configurando Tibia Client)).
+- Utilize um Tibia Client 12x([download aqui - tag 2.0.0 opentibiabr/canary](https://github.com/opentibiabr/canary/releases/tag/v2.0.0)) para acessar o servidor. É preciso alterar o valor das chaves `loginWebService` e `clientWebService` no arquivo `127.0.0.1_client.exe`([tutorial aqui](https://github.com/RafaelClaumann/dockerized-otserver?tab=readme-ov-file#configurando-tibia-client)).
 - Para fazer login no Tibia Client 12x utilize as credenciais `@god`/`god` ou `@a`/`1`.
 - Para encerrar os containers(otserver, mysql, phpmyadmin, php+apache) execute o comando `docker-compose down`.
 
