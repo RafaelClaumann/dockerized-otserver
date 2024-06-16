@@ -26,6 +26,12 @@ Quatro containers são utilizados:
 - Para fazer login no Tibia Client 12x use as seguintes credenciais: `@god`/`god` ou `@a`/`1`.
 - Para encerrar os containers(otserver, mysql, phpmyadmin, php+apache) execute o comando `docker-compose down`.
 
+## Iniciando Servidor
+![](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/01_tutorial_start_server.gif)
+
+## Configurando Client
+![](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/02_tutorial_config_tibia_client.gif)
+
 ## Arquivos do repositório
 No script `start.sh` são definidas as credenciais do banco de dados e as configurações de rede do Docker, em poucos casos será preciso alterar as credenciais ou configurações de rede. O script também é responsável por iniciar os containers(otserver, mysql, phpmyadmin, php+apache) com o comando `docker-compose up -d`.
 
