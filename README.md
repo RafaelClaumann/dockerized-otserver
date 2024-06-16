@@ -3,33 +3,31 @@
 ## O que tem nesse repositório?
 Neste repositório você encontrará scripts shell, arquivos SQL, yaml e PHP para iniciar um ambiente docker e executar um OTserver(_open tibia server_).
 
-Quatro containers são utilizados:
-- OTserver(_open tibia server_)
-- Banco de dados(_mysql_)
-- Gerenciador de banco de dados(_phpmyadmin_)
-- Servidor web(_php+apache_)
-
 ## Requisitos
 - docker
 - docker compose
 - unzip
 - wget
 - notepad++
-- client tibia 12x([Canary - Version 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0))
-- dependencias vistas em [Compiling on Ubuntu 22.04](https://github.com/opentibiabr/canary/wiki/Compiling-on-Ubuntu-22.04)
+- tibia client 12x
+
+## Quatro containers são utilizados:
+- OTserver(_ubuntu open tibia server_)
+- Banco de dados(_mysql_)
+- Gerenciador de banco de dados(_phpmyadmin_)
+- Servidor web(_php+apache_)
 
 ## Inico rápido
-- Para iniciar os containers(otserver, mysql, phpmyadmin, php+apache) e realizar o download dos arquivos do servidor execute o script `start.sh` fornecendo o parâmetro `-d` ou `--download`. Se você já fez o download dos arquivos e os colocou na pasta `server/` deste mesmo repositório basta executar o `start.sh` sem nenhum parâmetro.
-- O banco de dados pode ser gerenciado através do `phpMyAdmin` exposto em http://localhost:9090, as credenciais para acessa-lo são: `root`/`noob` ou `otserv`/`noob`.
-- O endpoint de autenticação é exposto pelo container `php+apache` em http://localhost:8080/login.php.
-- Utilize um Tibia Client 12x para acessar o servidor. O download pode ser feito através da [tag 2.0.0](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do repositório [opentibiabr/canary](https://github.com/opentibiabr/canary). No próprio Tibia Client 12x será preciso alterar os valores das chaves `loginWebService` e `clientWebService`([tutorial](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/README.md#alterando-url-de-autentica%C3%A7%C3%A3o-no-tibia-client)).
-- Para fazer login no Tibia Client 12x use as seguintes credenciais: `@god`/`god` ou `@a`/`1`.
+- Para realizar o download dos arquivos do servidor e inicia-lo, execute o script `start.sh` com o parâmetro `-d`. As execuções subsequentes de `start.sh` não precisarão do parâmetro `-d`.
+- Gerenciamento do banco de dados através do `phpMyAdmin` em http://localhost:9090 utilizando as credenciais `root`/`noob` ou `otserv`/`noob`.
+- Utilize um Tibia Client 12x([download aqui - tag 2.0.0 opentibiabr/canary](https://github.com/opentibiabr/canary/releases/tag/v2.0.0)) para acessar o servidor. É preciso alterar o valor das chaves `loginWebService` e `clientWebService` no arquivo `127.0.0.1_client.exe`([tutorial aqui](#Configurando Tibia Client)).
+- Para fazer login no Tibia Client 12x utilize as credenciais `@god`/`god` ou `@a`/`1`.
 - Para encerrar os containers(otserver, mysql, phpmyadmin, php+apache) execute o comando `docker-compose down`.
 
-## Iniciando Servidor
+## Demonstração iniciando servidor
 ![](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/01_tutorial_start_server.gif)
 
-## Configurando Client
+## Demonstração configurando client e login
 ![](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/02_tutorial_config_tibia_client.gif)
 
 ## Arquivos do repositório
@@ -64,7 +62,7 @@ O diagrama abaixo exibe as variáveis de ambiente declaradas no script `start.sh
 ![Diagrama sem nome](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/250704c4-eaac-42e5-8d23-03fec5d6aeb6)
 
 
-## Alterando URL de autenticação no Tibia Client
+## Configurando Tibia Client
 Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do Tibia Client 12x ja tenha sido realizado e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado.
 
 Navegue até a pasta `bin` do Tibia Client, clique com o botão direito do mouse sob o arquivo `127.0.0.1_client.exe`, abrir com notepad++ e localize as palavras `loginWebService` e `clientWebService`.
