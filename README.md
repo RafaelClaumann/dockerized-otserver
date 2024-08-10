@@ -59,8 +59,7 @@ O `docker-compose.yaml` contém a declaração dos containers(otserver, mysql, p
 
 O diagrama abaixo exibe as variáveis de ambiente declaradas no script `start.sh` e onde elas são utilizadas.
 
-![Diagrama sem nome](https://github.com/RafaelClaumann/dockerized-otserver/assets/25152862/250704c4-eaac-42e5-8d23-03fec5d6aeb6)
-
+![Diagrama sem nome](https://github.com/RafaelClaumann/dockerized-otserver/blob/main/03_uso_variaveis_de_ambiente.jpg)
 
 ## Configurando Tibia Client
 Supondo que o [download](https://github.com/opentibiabr/canary/releases/tag/v2.0.0) do Tibia Client 12x ja tenha sido realizado e o [notepad++](https://notepad-plus-plus.org/downloads/) esteja instalado.
