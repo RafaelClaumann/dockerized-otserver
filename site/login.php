@@ -1,7 +1,6 @@
 <?php
 
-// as informações do banco de dados são
-// preenchidas automaticamente quando o `start.sh` é iniciado
+// as informações do banco de dados são preenchidas automaticamente quando o `start.sh` é iniciado
 $databaseURL = getenv("DOCKER_NETWORK_GATEWAY_ENV");
 $databaseName = getenv("DATABASE_NAME_ENV");
 $databaseUser = getenv("DATABASE_USER_ENV");
@@ -16,13 +15,13 @@ $currentPassword = sha1($request->password);
 $characters = [];
 
 // busca a conta, valida o email e password
-// salva as informações da conta no arquivo 01_account.json
 $query = $mysqli->query("SELECT * FROM accounts WHERE email = '$request->email'");
 $account = $query->fetch_object();
+
+// salva as informações da conta no arquivo 01_account.json
 file_put_contents('01_account.json', json_encode($account));
 
-// verifica se o password recuperado do banco de dados é 
-// igual ao password fornecido no request body
+// verifica se o password recuperado do banco de dados é igual ao password fornecido no request body
 if (strcmp($account->password, $currentPassword) != 0) {
 	sendError(($request->email != false ? 'Email' : 'Account name') . ' or password is not correct.');
 }
