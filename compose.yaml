@@ -18,34 +18,6 @@ services:
     volumes:
         - ${PWD}/sql/:/docker-entrypoint-initdb.d/
 
-  server-svc:
-    image: ubuntu:22.04
-    container_name: server
-    depends_on:
-      mysql-svc:
-        condition: service_started
-    restart: on-failure
-    working_dir: /server
-    entrypoint: |
-      /bin/bash -c "
-        apt update && \
-        apt install libgomp1 && \
-        ./canary
-      "
-    environment:
-      DOCKER_NETWORK_GATEWAY_ENV: ${DOCKER_NETWORK_GATEWAY}
-      SERVER_NAME_ENV: ${SERVER_NAME}
-      DATABASE_NAME_ENV: ${DATABASE_NAME}
-      DATABASE_USER_ENV: ${DATABASE_USER}
-      DATABASE_PASSWORD_ENV: ${DATABASE_PASSWORD}      
-    networks:
-      - otserver
-    ports:
-      - 7171:7171
-      - 7172:7172      
-    volumes:
-        - ${PWD}/server:/server
-
   phpmyadmin-svc:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -82,6 +54,34 @@ services:
     volumes:
       - ${PWD}/site/:/var/www/html
       - ${PWD}/server/:/home/server     # mapeamento necessario se for configurar Gesior2012 ou myAAC
+
+  server-svc:
+    image: ubuntu:22.04
+    container_name: server
+    depends_on:
+      mysql-svc:
+        condition: service_started
+    restart: on-failure
+    working_dir: /server
+    entrypoint: |
+      /bin/bash -c "
+        apt update && \
+        apt install libgomp1 && \
+        ./canary
+      "
+    environment:
+      DOCKER_NETWORK_GATEWAY_ENV: ${DOCKER_NETWORK_GATEWAY}
+      SERVER_NAME_ENV: ${SERVER_NAME}
+      DATABASE_NAME_ENV: ${DATABASE_NAME}
+      DATABASE_USER_ENV: ${DATABASE_USER}
+      DATABASE_PASSWORD_ENV: ${DATABASE_PASSWORD}      
+    networks:
+      - otserver
+    ports:
+      - 7171:7171
+      - 7172:7172      
+    volumes:
+        - ${PWD}/server:/server
 
 networks:
   otserver:
