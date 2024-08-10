@@ -1,17 +1,13 @@
 #!/bin/bash
 
-#
 # sh start.sh
 # sh start.sh -d
 # sh start.sh --download
-#
 
 export SERVER_NAME=OTServBR
-
 export DATABASE_NAME=otservdb
 export DATABASE_USER=otserv
 export DATABASE_PASSWORD=noob
-
 export DOCKER_NETWORK_GATEWAY=192.168.128.1
 export DOCKER_NETWORK_CIDR=192.168.128.0/20
 
@@ -47,6 +43,17 @@ if [[ "$1" == "-d" ]] || [[ "$1" == "--download" ]]; then
     fi
     echo "[INFO] sucesso durante o unzip!"
 
+    # verifica a presença dos arquivos que compõe o servidor
+    if  [ ! -d "server/" ]                       ||
+        [ ! -d "server/data" ]                   ||
+        [ ! -d "server/data-otservbr-global" ]   ||
+        [ ! -f "server/schema.sql" ]             ||
+        [ ! -f "server/canary" ];
+    then
+        echo "[ERROR] arquivos do servidor não foram encontrados! reexecute o script com a flag '-d' ou '--download'"
+        exit 1
+    fi
+
     # copia o 'server/schema.sql' para 'sql/00_schema.sql'
     # altera as permissões do arquivo 'server/canary' para que seja possível executa-lo
     cp server/schema.sql sql/00_schema.sql 
@@ -64,17 +71,6 @@ if [[ "$1" == "-d" ]] || [[ "$1" == "--download" ]]; then
     echo
 fi
 
-# verifica a presença dos arquivos que compõe o servidor
-if [ ! -d "server/" ]                       ||
-   [ ! -d "server/data" ]                   ||
-   [ ! -d "server/data-otservbr-global" ]   ||  
-   [ ! -f "server/canary" ];
-then
-   echo "[ERROR] arquivos do servidor não foram encontrados! reexecute o script com a flag '-d' ou '--download'"
-   exit 1
-fi
-
-
 # iniciando os containers
 echo "[INFO] iniciando containers: MySQL, Ubuntu, PhpMyAdmin e PHP!"
 docker-compose up -d
@@ -86,7 +82,7 @@ if [ "$(docker exec php bash -c "php -m | grep mysqli")" = "" ]; then
         docker-php-ext-install mysqli &> /dev/null
         apachectl restart &> /dev/null
 EOF
-fi;
+fi
 
 # exibindo status dos containers
 echo
