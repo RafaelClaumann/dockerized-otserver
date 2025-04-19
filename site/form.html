@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário com PHP</title>
+</head>
+<body>
+    <h2>Formulário de Contato</h2>
+    <form action="processa.php" method="post">
+        <label for="account">Account:</label><br>
+        <input id="account" name="account" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input id="password" name="password" required><br><br>
+
+
+        <br><br>
+        <label for="character_name">Name:</label>
+        <input id="character_name" name="character_name" required><br><br>
+
+        <label for="profissao">Profissão:</label>
+        <select name="vocation" id="vocation">
+            <option value="1">Sorcerer</option>
+            <option value="2">Druid</option>
+            <option value="3">Paladin</option>
+            <option value="4">Knight</option>
+        </select><br>
+
+        <label for="level">Level:</label>
+        <input id="level" name="level" required><br><br>
+
+        <label for="magic_level">Magic Level:</label>
+        <input id="magic_level" name="magic_level" required><br><br>
+
+        <label for="skill_attack">Skill attack:</label>
+        <input id="skill_attack" name="skill_attack" required><br><br>
+
+        <label for="shielding">Shielding:</label>
+        <input id="shielding" name="shielding" required><br><br>
+        
+
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>
